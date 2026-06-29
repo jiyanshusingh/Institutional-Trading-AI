@@ -65,3 +65,85 @@ class MarketStructure:
         print("After detect_swings:")
         print(self.df.columns)
         return self.df
+    
+    def detect_bos(self):
+
+        self.df["Bullish_BOS"] = False
+        self.df["Bearish_BOS"] = False
+
+        last_swing_high = None
+        last_swing_low = None
+
+        for i in range(len(self.df)):
+
+            # Update latest swing levels
+            if self.df.iloc[i]["Swing_High"]:
+                last_swing_high = self.df.iloc[i]["High"]
+
+            if self.df.iloc[i]["Swing_Low"]:
+                last_swing_low = self.df.iloc[i]["Low"]
+
+            close = self.df.iloc[i]["Close"]
+
+            # Bullish BOS
+            if last_swing_high is not None and close > last_swing_high:
+                self.df.iloc[
+                    i,
+                    self.df.columns.get_loc("Bullish_BOS")
+                ] = True
+
+                last_swing_high = None
+
+            # Bearish BOS
+            if last_swing_low is not None and close < last_swing_low:
+                self.df.iloc[
+                    i,
+                    self.df.columns.get_loc("Bearish_BOS")
+                ] = True
+
+                last_swing_low = None
+
+        return self.df
+    def detect_choch(self):
+
+        self.df["Bullish_CHOCH"] = False
+        self.df["Bearish_CHOCH"] = False
+
+        trend = None
+
+        for i in range(len(self.df)):
+
+            structure = self.df.iloc[i]["Structure"]
+
+            # Detect current trend
+            if structure in ["HH", "HL"]:
+                trend = "UP"
+
+            elif structure in ["LH", "LL"]:
+                trend = "DOWN"
+
+            # Bullish CHOCH
+            if (
+                trend == "DOWN"
+                and self.df.iloc[i]["Bullish_BOS"]
+            ):
+                self.df.iloc[
+                    i,
+                    self.df.columns.get_loc("Bullish_CHOCH")
+                ] = True
+
+                trend = "UP"
+
+            # Bearish CHOCH
+            elif (
+                trend == "UP"
+                and self.df.iloc[i]["Bearish_BOS"]
+            ):
+                self.df.iloc[
+                    i,
+                    self.df.columns.get_loc("Bearish_CHOCH")
+                ] = True
+
+                trend = "DOWN"
+
+        return self.df

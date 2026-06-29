@@ -1,5 +1,6 @@
 from engines.data_engine import DataEngine
 from engines.market_structure import MarketStructure
+from engines.smc_engine import SMCEngine
 
 engine = DataEngine()
 
@@ -9,26 +10,23 @@ df = engine.get_data(
     interval="1d"
 )
 
+# Market Structure
 ms = MarketStructure(df)
-
-df = ms.detect_swings()
+ms.detect_swings()
 df = ms.classify_structure()
-df = ms.detect_bos()
-df = ms.detect_choch()
+
+# SMC
+smc = SMCEngine(df)
+df = smc.detect_bos()
 
 print(
     df[
         [
             "Close",
-            "High",
-            "Low",
             "Swing_High",
             "Swing_Low",
-            "Structure",
             "Bullish_BOS",
             "Bearish_BOS",
-            "Bullish_CHOCH",
-            "Bearish_CHOCH"
         ]
-    ].tail(60)
+    ].tail(40)
 )

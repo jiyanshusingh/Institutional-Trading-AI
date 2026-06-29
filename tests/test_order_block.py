@@ -1,5 +1,6 @@
 from engines.data_engine import DataEngine
 from engines.market_structure import MarketStructure
+from engines.order_block_engine import OrderBlockEngine
 
 engine = DataEngine()
 
@@ -16,19 +17,19 @@ df = ms.classify_structure()
 df = ms.detect_bos()
 df = ms.detect_choch()
 
+ob = OrderBlockEngine(df)
+
+df = ob.detect_order_blocks()
+
 print(
     df[
         [
+            "Open",
             "Close",
-            "High",
-            "Low",
-            "Swing_High",
-            "Swing_Low",
-            "Structure",
             "Bullish_BOS",
             "Bearish_BOS",
-            "Bullish_CHOCH",
-            "Bearish_CHOCH"
+            "Bullish_OB",
+            "Bearish_OB"
         ]
-    ].tail(60)
+    ].tail(80)
 )
