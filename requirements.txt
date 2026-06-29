@@ -5,3 +5,6 @@ ta
 plotly
 streamlit
 scipy
+streamlit
+plotly
+plotly

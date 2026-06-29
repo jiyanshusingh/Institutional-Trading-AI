@@ -25,8 +25,7 @@ class MarketStructure:
         return self.df
 
     def classify_structure(self):
-        print("\nInside classify_structure:")
-        print(self.df.columns)
+        
         self.df["Structure"] = ""
 
         previous_high = None
@@ -62,8 +61,7 @@ class MarketStructure:
                 self.df.loc[idx, "Structure"] = "LL"
 
             previous_low = current
-        print("After detect_swings:")
-        print(self.df.columns)
+        
         return self.df
     
     def detect_bos(self):
