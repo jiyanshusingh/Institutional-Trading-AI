@@ -8,16 +8,23 @@ from engines.order_block_engine import OrderBlockEngine
 from engines.fvg_engine import FVGEngine
 from engines.signal_engine import SignalEngine
 from engines.risk_engine import RiskEngine
+from engines.probability_engine import ProbabilityEngine
+from engines.confluence_engine import ConfluenceEngine
+from engines.rating_engine import RatingEngine
 
 
-def analyze_stock(symbol):
+def analyze_stock(
+    symbol,
+    period="1y",
+    interval="1d"
+):
 
     engine = DataEngine()
 
     df = engine.get_data(
         symbol,
-        period="1y",
-        interval="1d"
+        period=period,
+        interval=interval
     )
 
     # Indicators
@@ -57,10 +64,25 @@ def analyze_stock(symbol):
     # Risk
     risk = RiskEngine(df)
     trade = risk.calculate()
+    prob = ProbabilityEngine(df, result)
+    probability = prob.calculate()
+    conf = ConfluenceEngine(df, result)
+    confluence = conf.calculate()
+    
+    rating_engine = RatingEngine(
+    result,
+    probability,
+    confluence
+    )
+    rating = rating_engine.calculate()
+    
 
     return {
         "symbol": symbol,
         "df": df,
         "signal": result,
-        "risk": trade
+        "risk": trade,
+        "probability": probability,
+        "confluence": confluence,
+        "rating": rating
     }

@@ -12,6 +12,7 @@ from engines.scanner_engine import ScannerEngine
 from data.stocks import NSE_STOCKS
 from utils.chart import create_chart
 from services.analysis_service import analyze_stock
+from engines.multitimeframe_engine import MultiTimeframeEngine
 st.set_page_config(
     page_title="Institutional Trading AI",
     layout="wide"
@@ -43,8 +44,25 @@ if st.button("Analyze Stock"):
 
     signal = result["signal"]
     trade = result["risk"]
+    prob = result["probability"]
+    confluence = result["confluence"]
+    rating = result["rating"]
+    mtf = MultiTimeframeEngine()
+    mtf_result = mtf.analyze(symbol)
 
     st.success(f"Analysis Completed for {symbol}")
+    st.subheader("⭐ Institutional Rating")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric("Rating", rating["Rating"])
+
+    with col2:
+        st.metric("Stars", rating["Stars"])
+
+    with col3:
+        st.metric("AI Score", rating["Score"])
 
     st.subheader("📊 Signal")
 
@@ -69,6 +87,30 @@ if st.button("Analyze Stock"):
         st.metric("Target 2", trade["Target2"])
 
     st.metric("Risk Reward", f'{trade["RR"]}:1')
+    st.subheader("🎯 Institutional Confluence")
+
+    st.metric(
+        "Confluence Score",
+        f'{confluence["ConfluenceScore"]}/100'
+    )
+
+    st.write("Reasons")
+
+    for reason in confluence["Reasons"]:
+        st.write("✅", reason)
+        
+    st.subheader("🕒 Multi-Timeframe Analysis")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric("15 Minute", mtf_result["15m"])
+
+    with col2:
+        st.metric("1 Hour", mtf_result["1h"])
+
+    with col3:
+        st.metric("Daily", mtf_result["1d"])
     st.subheader("📈 Technical Indicators")
 
     latest = df.iloc[-1]
@@ -98,3 +140,41 @@ if st.button("Analyze Stock"):
     st.write("Sell Side Liquidity :", latest["Sell_Side_Liquidity"])
     st.write("Premium Zone :", latest["Premium_Zone"])
     st.write("Discount Zone :", latest["Discount_Zone"])
+    
+    st.subheader("🤖 AI Analysis")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.metric(
+            "Probability",
+            f'{prob["Probability"]}%'
+        )
+
+        st.metric(
+            "Confidence",
+            prob["Confidence"]
+        )
+
+        st.metric(
+            "Trend",
+            prob["Trend"]
+        )
+
+    with col2:
+
+        st.metric(
+            "Momentum",
+            prob["Momentum"]
+        )
+
+        st.metric(
+            "Institutional Bias",
+            prob["InstitutionalBias"]
+        )
+
+        st.metric(
+            "Recommendation",
+            prob["Recommendation"]
+        )
