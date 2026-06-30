@@ -19,7 +19,7 @@ class DataEngine:
 
         # Check if data exists
         if df.empty:
-            raise ValueError(f"No data found for {symbol}")
+            raise ValueError(f"No data found for {symbol}, period={period}, interval={interval}")
 
         # Flatten MultiIndex columns
         if isinstance(df.columns, pd.MultiIndex):

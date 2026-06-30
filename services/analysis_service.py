@@ -35,6 +35,7 @@ def analyze_stock(
     ms = MarketStructure(df)
     df = ms.detect_swings()
     df = ms.classify_structure()
+    df = ms.detect_trend_state()
     df = ms.detect_bos()
 
     # SMC
@@ -64,8 +65,10 @@ def analyze_stock(
     # Risk
     risk = RiskEngine(df)
     trade = risk.calculate()
-    prob = ProbabilityEngine(df, result)
+    
+    prob = ProbabilityEngine(df)
     probability = prob.calculate()
+    
     conf = ConfluenceEngine(df, result)
     confluence = conf.calculate()
     
@@ -76,6 +79,20 @@ def analyze_stock(
     )
     rating = rating_engine.calculate()
     
+    latest = df.iloc[-1]
+
+    latest = df.iloc[-1]
+
+    indicators = {
+    "EMA 20": round(latest["EMA20"], 2),
+    "EMA 50": round(latest["EMA50"], 2),
+    "EMA 200": round(latest["EMA200"], 2),
+    "RSI": round(latest["RSI"], 2),
+    "MACD": round(latest["MACD"], 2),
+    "MACD Signal": round(latest["MACD_SIGNAL"], 2),
+    "MACD Histogram": round(latest["MACD_HIST"], 2),
+    "ATR": round(latest["ATR"], 2),
+    }
 
     return {
         "symbol": symbol,
@@ -84,5 +101,6 @@ def analyze_stock(
         "risk": trade,
         "probability": probability,
         "confluence": confluence,
-        "rating": rating
+        "rating": rating,
+        "indicators": indicators
     }

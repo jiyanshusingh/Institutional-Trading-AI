@@ -19,12 +19,16 @@ class MultiTimeframeEngine:
 
         for tf, (period, interval) in timeframes.items():
 
-            result = analyze_stock(
-                symbol,
-                period=period,
-                interval=interval
-            )
+            try:
+                result = analyze_stock(
+                    symbol,
+                    period=period,
+                    interval=interval
+                )
 
-            results[tf] = result["signal"]["Signal"]
+                results[tf] = result["signal"]["Signal"]
 
+            except Exception as e:
+                print(f"{tf} failed: {e}")
+                results[tf] = "Unavailable"
         return results

@@ -18,17 +18,15 @@ df = ms.detect_choch()
 
 print(
     df[
-        [
-            "Close",
-            "High",
-            "Low",
-            "Swing_High",
-            "Swing_Low",
-            "Structure",
-            "Bullish_BOS",
-            "Bearish_BOS",
-            "Bullish_CHOCH",
-            "Bearish_CHOCH"
-        ]
-    ].tail(60)
+        (df["Bullish_BOS"]) |
+        (df["Bearish_BOS"])
+    ][[
+        "Close",
+        "High",
+        "Low",
+        "BOS_Level",
+        "BOS_Displacement",
+        "Bullish_BOS",
+        "Bearish_BOS"
+    ]]
 )

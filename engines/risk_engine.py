@@ -1,3 +1,8 @@
+from config.trading_config import (
+    ATR_STOP_MULTIPLIER,
+    ATR_TARGET1_MULTIPLIER,
+    ATR_TARGET2_MULTIPLIER
+)
 class RiskEngine:
 
     def __init__(self, df):
@@ -11,11 +16,11 @@ class RiskEngine:
 
         atr = latest["ATR"]
 
-        stop = entry - (1.5 * atr)
+        stop = entry - (ATR_STOP_MULTIPLIER * atr)
 
-        target1 = entry + (2 * atr)
+        target1 = entry + (ATR_TARGET1_MULTIPLIER * atr)
 
-        target2 = entry + (4 * atr)
+        target2 = entry + (ATR_TARGET2_MULTIPLIER * atr)
 
         rr = round((target1 - entry) / (entry - stop), 2)
 
