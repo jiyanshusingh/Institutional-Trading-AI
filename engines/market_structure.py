@@ -197,42 +197,61 @@ class MarketStructure:
         self.df["Bullish_CHOCH"] = False
         self.df["Bearish_CHOCH"] = False
 
-        trend = None
+        previous_protected_low = None
+        previous_protected_high = None
+
+        bullish_triggered = False
+        bearish_triggered = False
 
         for i in range(len(self.df)):
 
-            structure = self.df.iloc[i]["Structure"]
+            close = self.df.iloc[i]["Close"]
+            trend = self.df.iloc[i]["Trend_Candidate"]
 
-            # Detect current trend
-            if structure in ["HH", "HL"]:
-                trend = "UP"
+            protected_low = self.df.iloc[i]["Protected_Low"]
+            protected_high = self.df.iloc[i]["Protected_High"]
 
-            elif structure in ["LH", "LL"]:
-                trend = "DOWN"
+            # Reset trigger when a new protected low is created
+            if protected_low != previous_protected_low:
+                bearish_triggered = False
+                previous_protected_low = protected_low
 
-            # Bullish CHOCH
-            if (
-                trend == "DOWN"
-                and self.df.iloc[i]["Bullish_BOS"]
-            ):
-                self.df.iloc[
-                    i,
-                    self.df.columns.get_loc("Bullish_CHOCH")
-                ] = True
-
-                trend = "UP"
+            # Reset trigger when a new protected high is created
+            if protected_high != previous_protected_high:
+                bullish_triggered = False
+                previous_protected_high = protected_high
 
             # Bearish CHOCH
-            elif (
-                trend == "UP"
-                and self.df.iloc[i]["Bearish_BOS"]
+            if (
+                trend == "UPTREND"
+                and protected_low is not None
+                and pd.notna(protected_low)
+                and not bearish_triggered
+                and close < protected_low
             ):
-                self.df.iloc[
+
+                self.df.iat[
                     i,
                     self.df.columns.get_loc("Bearish_CHOCH")
                 ] = True
 
-                trend = "DOWN"
+                bearish_triggered = True
+
+            # Bullish CHOCH
+            elif (
+                trend == "DOWNTREND"
+                and protected_high is not None
+                and pd.notna(protected_high)
+                and not bullish_triggered
+                and close > protected_high
+            ):
+
+                self.df.iat[
+                    i,
+                    self.df.columns.get_loc("Bullish_CHOCH")
+                ] = True
+
+                bullish_triggered = True
 
         return self.df
     
@@ -242,17 +261,40 @@ class MarketStructure:
 
         trend = "UNKNOWN"
 
+        pending_hl = False
+        pending_lh = False
+
         for i in range(len(self.df)):
 
             structure = self.df.iloc[i]["Structure"]
 
-            if structure in ["HH", "HL"]:
-                trend = "UPTREND"
+        # ----------------------------
+        # Bullish sequence
+        # ----------------------------
+            if structure == "HL":
+                pending_hl = True
 
-            elif structure in ["LH", "LL"]:
-                trend = "DOWNTREND"
+            elif structure == "HH":
 
-            self.df.iloc[
+                if pending_hl:
+                    trend = "UPTREND"
+                    pending_hl = False
+                    pending_lh = False
+
+        # ----------------------------
+        # Bearish sequence
+        # ----------------------------
+            elif structure == "LH":
+                pending_lh = True
+
+            elif structure == "LL":
+
+                if pending_lh:
+                    trend = "DOWNTREND"
+                    pending_lh = False
+                    pending_hl = False
+
+            self.df.iat[
                 i,
                 self.df.columns.get_loc("Trend_Candidate")
             ] = trend
@@ -305,5 +347,56 @@ class MarketStructure:
                 i,
                 self.df.columns.get_loc("Protected_High")
             ] = protected_high
+
+        return self.df
+    
+    def detect_market_state(self):
+
+        self.df["Market_State"] = "UNKNOWN"
+
+        state = "UNKNOWN"
+
+        for i in range(len(self.df)):
+            bullish_bos = self.df.iloc[i]["Bullish_BOS"]
+            bearish_bos = self.df.iloc[i]["Bearish_BOS"]
+
+            bullish_choch = self.df.iloc[i]["Bullish_CHOCH"]
+            bearish_choch = self.df.iloc[i]["Bearish_CHOCH"]
+
+            trend_candidate = self.df.iloc[i]["Trend_Candidate"]
+            # Initialize the first market state
+            if state == "UNKNOWN":
+
+                if trend_candidate == "UPTREND":
+                    state = "UPTREND"
+
+                elif trend_candidate == "DOWNTREND":
+                    state = "DOWNTREND"
+
+            # UPTREND
+            elif state == "UPTREND":
+
+                if bearish_choch:
+                    state = "TRANSITION"
+
+            # DOWNTREND
+            elif state == "DOWNTREND":
+
+                if bullish_choch:
+                    state = "TRANSITION"
+
+            # TRANSITION
+            elif state == "TRANSITION":
+
+                if bullish_bos:
+                    state = "UPTREND"
+
+                elif bearish_bos:
+                    state = "DOWNTREND"
+
+            self.df.iat[
+                i,
+                self.df.columns.get_loc("Market_State")
+            ] = state
 
         return self.df
