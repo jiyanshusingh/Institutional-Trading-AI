@@ -236,9 +236,9 @@ class MarketStructure:
 
         return self.df
     
-    def detect_trend_state(self):
+    def detect_trend_candidate(self):
 
-        self.df["Trend_State"] = "UNKNOWN"
+        self.df["Trend_Candidate"] = "UNKNOWN"
 
         trend = "UNKNOWN"
 
@@ -254,7 +254,56 @@ class MarketStructure:
 
             self.df.iloc[
                 i,
-                self.df.columns.get_loc("Trend_State")
+                self.df.columns.get_loc("Trend_Candidate")
             ] = trend
+
+        return self.df
+    
+    def detect_protected_swings(self):
+
+        self.df["Protected_High"] = None
+        self.df["Protected_Low"] = None
+
+        pending_hl = None
+        pending_lh = None
+
+        protected_low = None
+        protected_high = None
+
+        for i in range(len(self.df)):
+
+            structure = self.df.iloc[i]["Structure"]
+
+            # Candidate Higher Low
+            if structure == "HL":
+                pending_hl = self.df.iloc[i]["Low"]
+
+            # Candidate Lower High
+            elif structure == "LH":
+                pending_lh = self.df.iloc[i]["High"]
+
+            # Confirm bullish impulse
+            elif structure == "HH":
+                if pending_hl is not None:
+                    protected_low = pending_hl
+                    protected_high = None
+                    pending_hl = None
+
+            # Confirm bearish impulse
+            elif structure == "LL":
+                if pending_lh is not None:
+                    protected_high = pending_lh
+                    protected_low = None
+                    pending_lh = None
+
+            self.df.iat[
+                i,
+                self.df.columns.get_loc("Protected_Low")
+            ] = protected_low
+
+            self.df.iat[
+                i,
+                self.df.columns.get_loc("Protected_High")
+            ] = protected_high
 
         return self.df
