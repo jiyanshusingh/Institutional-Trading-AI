@@ -1,5 +1,9 @@
 import pandas as pd
-from config.trading_config import SWING_LOOKBACK, BOS_MIN_DISPLACEMENT
+from config.trading_config import (
+    SWING_LOOKBACK,
+    STRUCTURE_BREAK_MIN_DISPLACEMENT,
+    MIN_BODY_PERCENT
+)
 
 class MarketStructure:
 
@@ -106,49 +110,81 @@ class MarketStructure:
 
         self.df["Bullish_BOS"] = False
         self.df["Bearish_BOS"] = False
+
+        self.df["BOS_Valid"] = False
+        self.df["BOS_Type"] = None
+
         self.df["BOS_Level"] = None
         self.df["BOS_Displacement"] = 0.0
 
-        last_swing_high = None
-        last_swing_low = None
+        continuation_high = None
+        continuation_low = None
 
         for i in range(len(self.df)):
 
             row = self.df.iloc[i]
 
-            if row["Swing_High"]:
-                last_swing_high = {
+            # ---------------------------------------
+            # Update continuation levels
+            # ---------------------------------------
+
+            if row["Structure"] == "HH":
+
+                continuation_high = {
                     "price": row["High"],
                     "strength": row["Swing_Strength"],
                     "index": i
                 }
 
-            if row["Swing_Low"]:
-                last_swing_low = {
+            elif row["Structure"] == "LL":
+
+                continuation_low = {
                     "price": row["Low"],
                     "strength": row["Swing_Strength"],
                     "index": i
                 }
 
             close = row["Close"]
+            open_price = row["Open"]
+            high = row["High"]
+            low = row["Low"]
 
-            # Bullish BOS
-            displacement = (
-                close - last_swing_high["price"]
-                if last_swing_high
+            # ---------------------------------------
+            # Candle quality
+            # ---------------------------------------
+
+            body = abs(close - open_price)
+            range_size = high - low
+
+            body_percent = (
+                body / range_size
+                if range_size > 0
                 else 0
             )
 
-            # Bearish BOS
+            # ---------------------------------------
+            # Calculate displacement
+            # ---------------------------------------
+
+            bullish_displacement = (
+                close - continuation_high["price"]
+                if continuation_high
+                else 0
+            )
+
             bearish_displacement = (
-                last_swing_low["price"] - close
-                if last_swing_low
+                continuation_low["price"] - close
+                if continuation_low
                 else 0
             )
+
+            # ---------------------------------------
+            # Bullish BOS
+            # ---------------------------------------
 
             if (
-                last_swing_high is not None
-                and displacement >= BOS_MIN_DISPLACEMENT
+                continuation_high is not None
+                and bullish_displacement >= STRUCTURE_BREAK_MIN_DISPLACEMENT
             ):
 
                 self.df.iat[
@@ -158,19 +194,35 @@ class MarketStructure:
 
                 self.df.iat[
                     i,
+                    self.df.columns.get_loc("BOS_Type")
+                ] = "BULLISH"
+
+                self.df.iat[
+                    i,
                     self.df.columns.get_loc("BOS_Level")
-                ] = last_swing_high["price"]
+                ] = continuation_high["price"]
 
                 self.df.iat[
                     i,
                     self.df.columns.get_loc("BOS_Displacement")
-                ] = displacement
+                ] = bullish_displacement
 
-                last_swing_high = None
+                if body_percent >= MIN_BODY_PERCENT:
+
+                    self.df.iat[
+                        i,
+                        self.df.columns.get_loc("BOS_Valid")
+                    ] = True
+
+                continuation_high = None
+
+            # ---------------------------------------
+            # Bearish BOS
+            # ---------------------------------------
 
             elif (
-                last_swing_low is not None
-                and bearish_displacement >= BOS_MIN_DISPLACEMENT
+                continuation_low is not None
+                and bearish_displacement >= STRUCTURE_BREAK_MIN_DISPLACEMENT
             ):
 
                 self.df.iat[
@@ -180,22 +232,35 @@ class MarketStructure:
 
                 self.df.iat[
                     i,
+                    self.df.columns.get_loc("BOS_Type")
+                ] = "BEARISH"
+
+                self.df.iat[
+                    i,
                     self.df.columns.get_loc("BOS_Level")
-                ] = last_swing_low["price"]
+                ] = continuation_low["price"]
 
                 self.df.iat[
                     i,
                     self.df.columns.get_loc("BOS_Displacement")
                 ] = bearish_displacement
 
-                last_swing_low = None
+                if body_percent >= MIN_BODY_PERCENT:
+
+                    self.df.iat[
+                        i,
+                        self.df.columns.get_loc("BOS_Valid")
+                    ] = True
+
+                continuation_low = None
 
         return self.df
-    
     def detect_choch(self):
 
         self.df["Bullish_CHOCH"] = False
         self.df["Bearish_CHOCH"] = False
+        self.df["CHOCH_Level"] = None
+        self.df["CHOCH_Displacement"] = 0.0
 
         previous_protected_low = None
         previous_protected_high = None
@@ -221,13 +286,28 @@ class MarketStructure:
                 bullish_triggered = False
                 previous_protected_high = protected_high
 
+            # Calculate displacement
+            bearish_displacement = (
+                protected_low - close
+                if protected_low is not None and pd.notna(protected_low)
+                else 0
+            )
+
+            bullish_displacement = (
+                close - protected_high
+                if protected_high is not None and pd.notna(protected_high)
+                else 0
+            )
+
+            # ------------------------
             # Bearish CHOCH
+            # ------------------------
             if (
                 trend == "UPTREND"
                 and protected_low is not None
                 and pd.notna(protected_low)
                 and not bearish_triggered
-                and close < protected_low
+                and bearish_displacement >= STRUCTURE_BREAK_MIN_DISPLACEMENT
             ):
 
                 self.df.iat[
@@ -235,15 +315,27 @@ class MarketStructure:
                     self.df.columns.get_loc("Bearish_CHOCH")
                 ] = True
 
+                self.df.iat[
+                    i,
+                    self.df.columns.get_loc("CHOCH_Level")
+                ] = protected_low
+
+                self.df.iat[
+                    i,
+                    self.df.columns.get_loc("CHOCH_Displacement")
+                ] = bearish_displacement
+
                 bearish_triggered = True
 
+            # ------------------------
             # Bullish CHOCH
+            # ------------------------
             elif (
                 trend == "DOWNTREND"
                 and protected_high is not None
                 and pd.notna(protected_high)
                 and not bullish_triggered
-                and close > protected_high
+                and bullish_displacement >= STRUCTURE_BREAK_MIN_DISPLACEMENT
             ):
 
                 self.df.iat[
@@ -251,10 +343,20 @@ class MarketStructure:
                     self.df.columns.get_loc("Bullish_CHOCH")
                 ] = True
 
+                self.df.iat[
+                    i,
+                    self.df.columns.get_loc("CHOCH_Level")
+                ] = protected_high
+
+                self.df.iat[
+                    i,
+                    self.df.columns.get_loc("CHOCH_Displacement")
+                ] = bullish_displacement
+
                 bullish_triggered = True
 
         return self.df
-    
+        
     def detect_trend_candidate(self):
 
         self.df["Trend_Candidate"] = "UNKNOWN"
@@ -357,6 +459,7 @@ class MarketStructure:
         state = "UNKNOWN"
 
         for i in range(len(self.df)):
+
             bullish_bos = self.df.iloc[i]["Bullish_BOS"]
             bearish_bos = self.df.iloc[i]["Bearish_BOS"]
 
@@ -364,7 +467,10 @@ class MarketStructure:
             bearish_choch = self.df.iloc[i]["Bearish_CHOCH"]
 
             trend_candidate = self.df.iloc[i]["Trend_Candidate"]
-            # Initialize the first market state
+
+            # -------------------------------------------------
+            # Initialize
+            # -------------------------------------------------
             if state == "UNKNOWN":
 
                 if trend_candidate == "UPTREND":
@@ -373,25 +479,39 @@ class MarketStructure:
                 elif trend_candidate == "DOWNTREND":
                     state = "DOWNTREND"
 
-            # UPTREND
+            # -------------------------------------------------
+            # Uptrend
+            # -------------------------------------------------
             elif state == "UPTREND":
 
                 if bearish_choch:
                     state = "TRANSITION"
 
-            # DOWNTREND
+            # -------------------------------------------------
+            # Downtrend
+            # -------------------------------------------------
             elif state == "DOWNTREND":
 
                 if bullish_choch:
                     state = "TRANSITION"
 
-            # TRANSITION
+            # -------------------------------------------------
+            # Transition
+            # -------------------------------------------------
             elif state == "TRANSITION":
 
-                if bullish_bos:
+                # Reversal confirmed
+                if bearish_bos:
+                    state = "DOWNTREND"
+
+                elif bullish_bos:
                     state = "UPTREND"
 
-                elif bearish_bos:
+                # Failed reversal
+                elif trend_candidate == "UPTREND":
+                    state = "UPTREND"
+
+                elif trend_candidate == "DOWNTREND":
                     state = "DOWNTREND"
 
             self.df.iat[

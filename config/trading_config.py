@@ -40,36 +40,28 @@ BUY_THRESHOLD = 70
 WATCH_THRESHOLD = 55
 
 # =====================================================
-# MARKET STRUCTURE
+# MARKET STRUCTURE SETTINGS
 # =====================================================
 
-SWING_LOOKBACK = 3
+# Swing Detection
+SWING_LOOKBACK = 5
+MIN_SWING_CANDLES = 3
+MIN_SWING_ATR = 1.0
+
+# Structure Break Confirmation
+STRUCTURE_BREAK_MIN_DISPLACEMENT = 1.0
+
+# ATR Confirmation (Reserved for future versions)
+BOS_MIN_ATR = 0.25
 
 # =====================================================
-# SCANNER
+# SCANNER SETTINGS
 # =====================================================
 
 TOP_STOCKS = 20
 
 # =====================================================
-# MARKET STRUCTURE V2
+# BOS QUALITY
 # =====================================================
 
-SWING_LOOKBACK = 3
-
-MIN_SWING_CANDLES = 3
-
-MIN_SWING_ATR = 1.0
-
-# =====================================================
-# BOS SETTINGS
-# =====================================================
-
-BOS_MIN_ATR = 0.25
-# ===========================
-# Market Structure
-# ===========================
-
-SWING_LOOKBACK = 5
-
-BOS_MIN_DISPLACEMENT = 1
+MIN_BODY_PERCENT = 0.60

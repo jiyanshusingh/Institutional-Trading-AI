@@ -22,14 +22,57 @@ df = ms.detect_choch()
 df = ms.detect_market_state()
 
 validator = ValidationEngine(df)
-result = validator.validate_swings()
 
-print("\n========== Swing Validation ==========")
-print("Passed :", result["passed"])
+validator = ValidationEngine(df)
 
-if result["errors"]:
-    print("\nErrors:")
-    for error in result["errors"]:
-        print("-", error)
-else:
-    print("No errors found.")
+result = validator.validate_choch()
+
+print(
+    df[
+        (df["Bullish_CHOCH"]) |
+        (df["Bearish_CHOCH"])
+    ][[
+        "Close",
+        "Structure",
+        "Trend_Candidate",
+        "Protected_High",
+        "Protected_Low",
+        "Bullish_CHOCH",
+        "Bearish_CHOCH",
+        "Market_State"
+    ]]
+)
+from engines.order_block_engine import OrderBlockEngine
+from engines.structure_event_engine import StructureEventEngine
+
+event_engine = StructureEventEngine(df)
+bos_events = event_engine.generate_events()
+
+ob_engine = OrderBlockEngine(df, bos_events)
+
+df = ob_engine.initialize()
+
+print("\n========== ORDER BLOCK PROJECTION ==========\n")
+
+ob_engine.detect_order_blocks()
+
+df = ob_engine.project_order_blocks()
+
+print(
+
+    df[
+        [
+            "Bullish_OB",
+            "Bearish_OB",
+            "OB_High",
+            "OB_Low",
+            "OB_Type",
+            "OB_Source_BOS",
+            "OB_Valid"
+        ]
+    ][
+        (df["Bullish_OB"]) |
+        (df["Bearish_OB"])
+    ]
+
+)
