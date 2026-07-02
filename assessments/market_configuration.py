@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class MarketObservations:
+class MarketConfiguration:
 
     structure_events: tuple = ()
 

@@ -5,14 +5,14 @@ from assessments.structural.rules.base_rule import StructuralRule
 
 class ContinuationRule(StructuralRule):
 
-    def evaluate(self, observations):
+    def evaluate(self, configuration):
 
-        latest = observations.latest_expansion()
+        latest = configuration.latest_expansion()
 
         if latest is None:
             return None
 
-        events = observations.structure_events_after(
+        events = configuration.structure_events_after(
             latest.end_index
         )
 

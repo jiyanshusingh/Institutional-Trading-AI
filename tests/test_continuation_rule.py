@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from assessments.market_observations import MarketObservations
+from assessments.market_configuration import MarketConfiguration
 from assessments.structural.rules.continuation_rule import ContinuationRule
 from models.expansion import Expansion
 from models.structure_event import StructureEvent
@@ -23,7 +23,7 @@ expansion1 = Expansion(
     end_index=20
 )
 
-obs1 = MarketObservations(
+obs1 = MarketConfiguration(
     structure_events=(),
     expansions=(expansion1,)
 )
@@ -44,7 +44,7 @@ expansion2 = Expansion(
     end_index=40
 )
 
-obs2 = MarketObservations(
+obs2 = MarketConfiguration(
     structure_events=(),
     expansions=(expansion2,)
 )
@@ -67,7 +67,7 @@ choch = StructureEvent(
     metadata={}
 )
 
-obs3 = MarketObservations(
+obs3 = MarketConfiguration(
     structure_events=(choch,),
     expansions=(expansion1,)
 )
@@ -77,7 +77,7 @@ obs3 = MarketObservations(
 # No Expansion
 # -----------------------------
 
-obs4 = MarketObservations()
+obs4 = MarketConfiguration()
 
 # -----------------------------
 # Run Tests
@@ -85,7 +85,7 @@ obs4 = MarketObservations()
 
 from datetime import datetime
 
-from assessments.market_observations import MarketObservations
+from assessments.market_configuration import MarketConfiguration
 from assessments.structural.rules.continuation_rule import ContinuationRule
 from models.expansion import Expansion
 from models.structure_event import StructureEvent
@@ -108,7 +108,7 @@ expansion1 = Expansion(
     end_index=20
 )
 
-obs1 = MarketObservations(
+obs1 = MarketConfiguration(
     structure_events=(),
     expansions=(expansion1,)
 )
@@ -129,7 +129,7 @@ expansion2 = Expansion(
     end_index=40
 )
 
-obs2 = MarketObservations(
+obs2 = MarketConfiguration(
     structure_events=(),
     expansions=(expansion2,)
 )
@@ -152,7 +152,7 @@ choch = StructureEvent(
     metadata={}
 )
 
-obs3 = MarketObservations(
+obs3 = MarketConfiguration(
     structure_events=(choch,),
     expansions=(expansion1,)
 )
@@ -162,7 +162,7 @@ obs3 = MarketObservations(
 # No Expansion
 # -----------------------------
 
-obs4 = MarketObservations()
+obs4 = MarketConfiguration()
 
 # -----------------------------
 # Run Tests

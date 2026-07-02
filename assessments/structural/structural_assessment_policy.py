@@ -12,11 +12,11 @@ class StructuralAssessmentPolicy:
 
         ]
 
-    def assess(self, observations):
+    def assess(self, configuration):
 
         for rule in self.rules:
 
-            assessment = rule.evaluate(observations)
+            assessment = rule.evaluate(configuration)
 
             if assessment is not None:
 

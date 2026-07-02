@@ -11,9 +11,9 @@ class StructuralAssessmentEngine:
 
     def assess(
         self,
-        observations
+        configuration
     ):
 
         return self.policy.assess(
-            observations
+            configuration
         )
