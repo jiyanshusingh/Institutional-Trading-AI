@@ -5,6 +5,8 @@ from dataclasses import dataclass
 class MarketConfiguration:
 
     structure_events: tuple = ()
+    
+    segments: tuple = ()
 
     expansions: tuple = ()
 

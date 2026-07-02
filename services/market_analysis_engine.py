@@ -5,7 +5,7 @@ from engines.smc_engine import SMCEngine
 from engines.structure_event_engine import StructureEventEngine
 from engines.segment_engine import SegmentEngine
 from engines.expansion_engine import ExpansionEngine
-
+from assessments.market_configuration import MarketConfiguration
 class MarketAnalysisEngine:
 
     def __init__(self):
@@ -88,4 +88,22 @@ class MarketAnalysisEngine:
         # TODO
         # Market Configuration
 
-        return expansions
+        return MarketConfiguration(
+
+            structure_events=tuple(structure_events),
+
+            segments=tuple(segments),
+
+            expansions=tuple(expansions),
+
+            origin_regions=(),
+
+            order_blocks=(),
+
+            fair_value_gaps=(),
+
+            liquidity_regions=(),
+
+            relationships=()
+
+        )

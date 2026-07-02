@@ -14,15 +14,37 @@ def main():
 
     engine = MarketAnalysisEngine()
 
-    expansions = engine.analyze(df)
+    configuration = engine.analyze(df)
+
+    print()
+
+    print("======================")
+    print("MARKET CONFIGURATION")
+    print("======================")
+
+    print("Events      :", len(configuration.structure_events))
+    print("Segments    :", len(configuration.segments))
+    print("Expansions  :", len(configuration.expansions))
+
+    print()
+
+    print("Latest Expansion")
+    print("----------------")
+    print(configuration.latest_expansion())
 
     print()
 
     print("===================")
-    print("EXPANSIONS")
+    print("ALL EXPANSIONS")
     print("===================")
+    
+    print()
 
-    for expansion in expansions:
+    print("Latest Structure Event")
+    print("----------------------")
+    print(configuration.latest_structure_event())
+
+    for expansion in configuration.expansions:
         print(expansion)
 
 
