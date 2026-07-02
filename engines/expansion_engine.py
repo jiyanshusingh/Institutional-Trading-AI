@@ -41,7 +41,13 @@ class ExpansionEngine:
 
                 base_swing_index=event.base_swing_index,
 
-                bos_event_id=event.event_id
+                broken_swing_index=event.broken_swing_index,
+
+                bos_event_id=event.event_id,
+
+                start_index=event.base_swing_index,
+
+                end_index=event.candle_index
 
             )
         # ------------------------------------
