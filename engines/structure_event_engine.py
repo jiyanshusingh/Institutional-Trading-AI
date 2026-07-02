@@ -1,9 +1,11 @@
+from models.structure_event import StructureEvent
 class StructureEventEngine:
 
     def __init__(self, df):
 
         self.df = df.copy()
         self.events = []
+        self.next_event_id = 1
     # -------------------------------------------------
     # Event Factory
     # -------------------------------------------------
@@ -21,29 +23,29 @@ class StructureEventEngine:
         metadata
     ):
 
-        return {
+        return StructureEvent(
 
-            "event_id": event_id,
+            event_id=event_id,
 
-            "event_type": event_type,
+            event_type=event_type,
 
-            "direction": direction,
+            direction=direction,
 
-            "timestamp": timestamp,
+            timestamp=timestamp,
 
-            "candle_index": candle_index,
+            candle_index=candle_index,
 
-            "broken_swing_index": broken_swing_index,
+            broken_swing_index=broken_swing_index,
 
-            "base_swing_index": base_swing_index,
+            base_swing_index=base_swing_index,
 
-            "price": price,
+            price=price,
 
-            "valid": valid,
+            valid=valid,
 
-            "metadata": metadata
+            metadata=metadata
 
-        }
+        )
     # -------------------------------------------------
     # Dispatcher
     # -------------------------------------------------
@@ -51,6 +53,9 @@ class StructureEventEngine:
 
         self.generate_bos_events()
         self.generate_choch_events()
+        self.events.sort(
+            key=lambda event: event.candle_index
+        )
 
         return self.events
 
@@ -59,7 +64,6 @@ class StructureEventEngine:
     # -------------------------------------------------
     def generate_bos_events(self):
 
-        event_id = len(self.events) + 1
 
         for i in range(len(self.df)):
 
@@ -86,7 +90,7 @@ class StructureEventEngine:
 
             event = self.create_event(
 
-                event_id=event_id,
+                event_id=self.next_event_id,
 
                 event_type="BOS",
 
@@ -105,34 +109,26 @@ class StructureEventEngine:
                 valid=True,
 
                 metadata={
-
                     "displacement": row["BOS_Displacement"]
-
                 }
 
             )
 
             self.events.append(event)
 
-            event_id += 1
+            self.next_event_id += 1
             
     # -------------------------------------------------
     # CHOCH Events
     # -------------------------------------------------
     def generate_choch_events(self):
 
-        event_id = len(self.events) + 1
+        
 
         for i in range(len(self.df)):
 
             row = self.df.iloc[i]
-            if row["CHOCH_Valid"]:
-
-                print("Index :", i)
-                print("Type  :", row["CHOCH_Type"])
-                print("Level :", row["CHOCH_Level"])
-                print("Broken:", row["CHOCH_Broken_Swing_Index"])
-                print("Base  :", row["CHOCH_Base_Swing_Index"])
+            
             # Only VALID CHOCH create events
             if not row["CHOCH_Valid"]:
                 continue
@@ -143,15 +139,10 @@ class StructureEventEngine:
                 else "BEARISH"
             )
 
-            if direction == "BULLISH":
-                base_swing_index = row["CHOCH_Base_Swing_Index"]
-
-            else:
-                base_swing_index = row["CHOCH_Base_Swing_Index"]
-
+            base_swing_index = row["CHOCH_Base_Swing_Index"]
             event = self.create_event(
 
-                event_id=event_id,
+                event_id=self.next_event_id,
 
                 event_type="CHOCH",
 
@@ -178,8 +169,4 @@ class StructureEventEngine:
             )
 
             self.events.append(event)
-            print(event)
-            print("Total Events:", len(self.events))
-
-
-            event_id += 1
+            self.next_event_id += 1

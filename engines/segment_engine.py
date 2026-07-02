@@ -1,99 +1,135 @@
-import pandas as pd
+from models.segment import Segment
+from models.structure_event import StructureEvent
 
 
 class SegmentEngine:
 
-    def __init__(self, df, bos_events):
+    def __init__(self, events: list[StructureEvent]):
 
-        self.df = df.copy()
-        self.bos_events = bos_events
+        self.events = events
 
         self.segments = []
 
-    # --------------------------------------------------
-    # Create Segment
-    # --------------------------------------------------
+        self.active_segment = None
 
-    def create_segment(self, bos_event):
+        self.next_segment_id = 1
 
-        segment = {
+    def build(self):
 
-            "segment_id": len(self.segments) + 1,
+        for event in self.events:
 
-            "source_bos": bos_event["event_id"],
-
-            "direction": bos_event["direction"],
-
-            "start_index": None,
-
-            "end_index": bos_event["candle_index"],
-
-            "state": "ACTIVE",
-
-            "valid": True
-
-        }
-
-        return segment
-
-    # --------------------------------------------------
-    # Validate Segment
-    # --------------------------------------------------
-
-    def validate_segment(self, segment):
-
-        if segment is None:
-            return False
-
-        # Rule 1
-        # Valid Direction
-
-        if segment["direction"] not in ["BULLISH", "BEARISH"]:
-            return False
-
-        # Rule 2
-        # Source BOS must exist
-
-        if segment["source_bos"] is None:
-            return False
-
-        # Rule 3
-        # End Index must exist
-
-        if segment["end_index"] is None:
-            return False
-
-        # Rule 4
-        # State must be ACTIVE
-
-        if segment["state"] != "ACTIVE":
-            return False
-
-        return True
-
-    # --------------------------------------------------
-    # Store Segment
-    # --------------------------------------------------
-
-    def store_segment(self, segment):
-
-        if segment is None:
-            return
-
-        self.segments.append(segment)
-
-    # --------------------------------------------------
-    # Generate Segments
-    # --------------------------------------------------
-
-    def generate_segments(self):
-
-        for bos_event in self.bos_events:
-
-            segment = self.create_segment(bos_event)
-
-            if self.validate_segment(segment):
-
-                self.store_segment(segment)
+            self.process_event(event)
 
         return self.segments
+
+    def process_event(self, event: StructureEvent):
+
+        # ------------------------------------
+        # BOS
+        # ------------------------------------
+
+        if event.event_type == "BOS":
+
+            self.handle_bos(event)
+
+        # ------------------------------------
+        # CHOCH
+        # ------------------------------------
+
+        elif event.event_type == "CHOCH":
+
+            self.handle_choch(event)
+    # ------------------------------------
+    # BOS
+    # ------------------------------------
+
+    def handle_bos(self, event: StructureEvent):
+
+        # ------------------------------------
+        # No Active Segment
+        # ------------------------------------
+        if self.active_segment is None:
+
+            segment = Segment(
+
+                id=self.next_segment_id,
+
+                direction=event.direction,
+
+                start_event_id=event.event_id,
+
+                end_event_id=None,
+
+                start_index=event.candle_index,
+
+                end_index=None
+
+            )
+
+            self.segments.append(segment)
+
+            self.active_segment = segment
+
+            self.next_segment_id += 1
+
+        # ------------------------------------
+        # Continuation BOS
+        # ------------------------------------
+        elif self.active_segment.direction == event.direction:
+
+            return
+
+        # ------------------------------------
+        # Opposite BOS
+        # Should Never Happen
+        # ------------------------------------
+        else:
+
+            raise RuntimeError(
+                "Received opposite BOS while a Segment is still active."
+            )
+            # ------------------------------------
+            # CHOCH
+            # ------------------------------------
+
+    def handle_choch(self, event: StructureEvent):
+
+        # ------------------------------------
+        # No Active Segment
+        # ------------------------------------
+        if self.active_segment is None:
+
+            return
+
+        # ------------------------------------
+        # Same Direction
+        # Ignore
+        # ------------------------------------
+        if event.direction == self.active_segment.direction:
+
+            return
+
+        # ------------------------------------
+        # Close Active Segment
+        # ------------------------------------
+        closed_segment = Segment(
+
+            id=self.active_segment.id,
+
+            direction=self.active_segment.direction,
+
+            start_event_id=self.active_segment.start_event_id,
+
+            end_event_id=event.event_id,
+
+            start_index=self.active_segment.start_index,
+
+            end_index=event.candle_index
+
+        )
+
+        segment_index = len(self.segments) - 1
+
+        self.segments[segment_index] = closed_segment
+
+        self.active_segment = None

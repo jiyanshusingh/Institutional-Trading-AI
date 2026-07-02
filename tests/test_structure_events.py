@@ -75,12 +75,14 @@ print("==============================\n")
 
 for event in events:
 
-    print(f"Event ID            : {event['event_id']}")
-    print(f"Event Type          : {event['event_type']}")
-    print(f"Direction           : {event['direction']}")
-    print(f"Candle Index        : {event['candle_index']}")
-    print(f"Broken Swing Index  : {event['broken_swing_index']}")
-    print(f"Base Swing Index    : {event['base_swing_index']}")
-    print(f"Price               : {event['price']}")
-    print(f"Valid               : {event['valid']}")
-    print("------------------------------")
+    print(f"""
+Event ID            : {event.event_id}
+Event Type          : {event.event_type}
+Direction           : {event.direction}
+Candle Index        : {event.candle_index}
+Broken Swing Index  : {event.broken_swing_index}
+Base Swing Index    : {event.base_swing_index}
+Price               : {event.price}
+Valid               : {event.valid}
+------------------------------
+""")
