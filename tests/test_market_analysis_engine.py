@@ -31,6 +31,12 @@ def main():
     print("Latest Expansion")
     print("----------------")
     print(configuration.latest_expansion())
+    
+    print()
+
+    print("Governing Expansion")
+    print("-------------------")
+    print(configuration.governing_expansion())
 
     print()
 
