@@ -14,8 +14,11 @@ from policies.order_block.ict.ict_order_block_candidate_generator import (
     ICTOrderBlockCandidateGenerator)
 from policies.order_block.ict.ict_projection_policy import (
     ICTProjectionPolicy)
+from engines.fair_value_gap_engine import (
+    FairValueGapEngine)
+from policies.fair_value_gap.ict.ict_fvg_policy import (
+    ICTFairValueGapPolicy)
 class MarketAnalysisEngine:
-
     def __init__(self):
 
         # Structure
@@ -133,8 +136,14 @@ class MarketAnalysisEngine:
 
         )
         order_blocks = order_block_engine.build()
-        # TODO
+        
         # Fair Value Gaps
+        fvg_policy = ICTFairValueGapPolicy()
+        fvg_engine = FairValueGapEngine(
+            configuration=configuration,
+            policy=fvg_policy
+        )
+        fair_value_gaps = fvg_engine.build()
 
         # TODO
         # Liquidity Regions
@@ -159,7 +168,7 @@ class MarketAnalysisEngine:
 
             order_blocks=tuple(order_blocks),
 
-            fair_value_gaps=(),
+            fair_value_gaps=tuple(fair_value_gaps),
 
             liquidity_regions=(),
 

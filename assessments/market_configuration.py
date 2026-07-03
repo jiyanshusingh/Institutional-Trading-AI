@@ -130,8 +130,10 @@ class MarketConfiguration:
     def active_order_blocks(self):
         pass# later
 
-    def latest_fvg(self):
-        pass# later
+    def latest_fair_value_gap(self):
+        if not self.fair_value_gaps:
+            return None
+        return self.fair_value_gaps[-1]
 
     def open_fvgs(self):
         pass# later

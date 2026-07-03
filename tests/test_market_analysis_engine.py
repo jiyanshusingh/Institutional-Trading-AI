@@ -82,6 +82,23 @@ def main():
 
     for order_block in configuration.order_blocks:
         print(order_block)
+    
+    print()
+    print("Fair Value Gaps")
+    print("----------------")
+    print(len(configuration.fair_value_gaps))
+    
+    print()
+    print("Latest Fair Value Gap")
+    print("---------------------")
+    print(configuration.latest_fair_value_gap())
+    
+    print()
+    print("======================")
+    print("ALL FAIR VALUE GAPS")
+    print("======================")
+    for fvg in configuration.fair_value_gaps:
+        print(fvg)
 
 if __name__ == "__main__":
     main()
