@@ -9,6 +9,11 @@ from assessments.market_configuration import MarketConfiguration
 import pandas as pd
 from policies.origin_region.ict_origin_region_policy import ICTOriginRegionPolicy
 from engines.origin_region_engine import OriginRegionEngine
+from engines.order_block_engine import OrderBlockEngine
+from policies.order_block.ict.ict_order_block_candidate_generator import (
+    ICTOrderBlockCandidateGenerator)
+from policies.order_block.ict.ict_projection_policy import (
+    ICTProjectionPolicy)
 class MarketAnalysisEngine:
 
     def __init__(self):
@@ -84,7 +89,6 @@ class MarketAnalysisEngine:
             expansions=tuple(expansions)
 
         )
-
         origin_region_policy = ICTOriginRegionPolicy()
 
         origin_region_engine = OriginRegionEngine(
@@ -112,10 +116,23 @@ class MarketAnalysisEngine:
             origin_regions=tuple(origin_regions)
 
         )
+        
+        candidate_generator = ICTOrderBlockCandidateGenerator()
 
-        # TODO
-        # Order Blocks
+        projection_policy = ICTProjectionPolicy()
 
+        order_block_engine = OrderBlockEngine(
+
+            origin_regions=origin_regions,
+
+            configuration=configuration,
+
+            candidate_generator=candidate_generator,
+
+            projection_policy=projection_policy
+
+        )
+        order_blocks = order_block_engine.build()
         # TODO
         # Fair Value Gaps
 
@@ -128,4 +145,24 @@ class MarketAnalysisEngine:
         # TODO
         # Market Configuration
 
-        return configuration
+        return MarketConfiguration(
+
+            df=df,
+
+            structure_events=tuple(structure_events),
+
+            segments=tuple(segments),
+
+            expansions=tuple(expansions),
+
+            origin_regions=tuple(origin_regions),
+
+            order_blocks=tuple(order_blocks),
+
+            fair_value_gaps=(),
+
+            liquidity_regions=(),
+
+            relationships=()
+
+        )

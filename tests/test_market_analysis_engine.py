@@ -72,6 +72,16 @@ def main():
 
     for region in configuration.origin_regions:
         print(region)
+        
+    print()
+    print("Order Blocks")
+    print("------------")
+    print(len(configuration.order_blocks))
+
+    print()
+
+    for order_block in configuration.order_blocks:
+        print(order_block)
 
 if __name__ == "__main__":
     main()
