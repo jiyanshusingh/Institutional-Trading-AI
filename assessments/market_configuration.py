@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-
+import pandas as pd
 
 @dataclass(frozen=True)
 class MarketConfiguration:
-
+    df: pd.DataFrame
     structure_events: tuple = ()
     
     segments: tuple = ()

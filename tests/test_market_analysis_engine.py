@@ -22,16 +22,23 @@ def main():
     print("MARKET CONFIGURATION")
     print("======================")
 
-    print("Events      :", len(configuration.structure_events))
-    print("Segments    :", len(configuration.segments))
-    print("Expansions  :", len(configuration.expansions))
+    print("Events          :", len(configuration.structure_events))
+    print("Segments        :", len(configuration.segments))
+    print("Expansions      :", len(configuration.expansions))
+    print("Origin Regions  :", len(configuration.origin_regions))
+
+    print()
+
+    print("Latest Structure Event")
+    print("----------------------")
+    print(configuration.latest_structure_event())
 
     print()
 
     print("Latest Expansion")
     print("----------------")
     print(configuration.latest_expansion())
-    
+
     print()
 
     print("Governing Expansion")
@@ -40,19 +47,31 @@ def main():
 
     print()
 
+    print("Latest Origin Region")
+    print("--------------------")
+
+    if configuration.origin_regions:
+        print(configuration.origin_regions[-1])
+    else:
+        print("None")
+
+    print()
+
     print("===================")
     print("ALL EXPANSIONS")
     print("===================")
-    
-    print()
-
-    print("Latest Structure Event")
-    print("----------------------")
-    print(configuration.latest_structure_event())
 
     for expansion in configuration.expansions:
         print(expansion)
 
+    print()
+
+    print("======================")
+    print("ALL ORIGIN REGIONS")
+    print("======================")
+
+    for region in configuration.origin_regions:
+        print(region)
 
 if __name__ == "__main__":
     main()

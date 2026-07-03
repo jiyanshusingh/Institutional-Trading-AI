@@ -6,6 +6,9 @@ from engines.structure_event_engine import StructureEventEngine
 from engines.segment_engine import SegmentEngine
 from engines.expansion_engine import ExpansionEngine
 from assessments.market_configuration import MarketConfiguration
+import pandas as pd
+from policies.origin_region.ict_origin_region_policy import ICTOriginRegionPolicy
+from engines.origin_region_engine import OriginRegionEngine
 class MarketAnalysisEngine:
 
     def __init__(self):
@@ -69,9 +72,46 @@ class MarketAnalysisEngine:
             structure_events
         )
         expansions = expansion_engine.build()
+        
+        configuration = MarketConfiguration(
 
-        # TODO
-        # Origin Regions
+            df=df,
+
+            structure_events=tuple(structure_events),
+
+            segments=tuple(segments),
+
+            expansions=tuple(expansions)
+
+        )
+
+        origin_region_policy = ICTOriginRegionPolicy()
+
+        origin_region_engine = OriginRegionEngine(
+
+            expansions=expansions,
+
+            configuration=configuration,
+
+            policy=origin_region_policy
+
+        )
+
+        origin_regions = origin_region_engine.build()
+        
+        configuration = MarketConfiguration(
+
+            df=df,
+
+            structure_events=tuple(structure_events),
+
+            segments=tuple(segments),
+
+            expansions=tuple(expansions),
+
+            origin_regions=tuple(origin_regions)
+
+        )
 
         # TODO
         # Order Blocks
@@ -88,22 +128,4 @@ class MarketAnalysisEngine:
         # TODO
         # Market Configuration
 
-        return MarketConfiguration(
-
-            structure_events=tuple(structure_events),
-
-            segments=tuple(segments),
-
-            expansions=tuple(expansions),
-
-            origin_regions=(),
-
-            order_blocks=(),
-
-            fair_value_gaps=(),
-
-            liquidity_regions=(),
-
-            relationships=()
-
-        )
+        return configuration
