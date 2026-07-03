@@ -1,0 +1,242 @@
+.
+├── .gitignore
+├── .pytest_cache
+│   ├── .gitignore
+│   ├── CACHEDIR.TAG
+│   ├── README.md
+│   └── v
+│       └── cache
+│           ├── lastfailed
+│           └── nodeids
+├── CHANGELOG.md
+├── PROJECT.md
+├── PROJECT_TREE.txt
+├── README.md
+├── ROADMAP.md
+├── app.py
+├── architecture
+│   └── selection
+│       ├── __init__.py
+│       ├── candidate.py
+│       ├── candidate_generator.py
+│       ├── selection_policy.py
+│       ├── selection_problem.py
+│       └── selection_result.py
+├── assessments
+│   ├── __init__.py
+│   ├── market_configuration.py
+│   ├── structural
+│   │   ├── __init__.py
+│   │   ├── assessment_evidence.py
+│   │   ├── rules
+│   │   │   ├── __init__.py
+│   │   │   ├── base_rule.py
+│   │   │   └── continuation_rule.py
+│   │   ├── structural_assessment.py
+│   │   ├── structural_assessment_engine.py
+│   │   ├── structural_assessment_policy.py
+│   │   └── structural_state.py
+│   └── tests
+├── backtesting
+│   ├── __init__.py
+│   ├── metrics.py
+│   ├── report.py
+│   └── trade.py
+├── builders
+│   └── order_block_builder.py
+├── config
+│   ├── __init__.py
+│   └── trading_config.py
+├── config.py
+├── dashboard
+│   ├── __init__.py
+│   ├── components
+│   │   ├── __init__.py
+│   │   ├── ai_component.py
+│   │   ├── chart_component.py
+│   │   ├── confluence_component.py
+│   │   ├── indicator_component.py
+│   │   ├── multitimeframe_component.py
+│   │   ├── rating_component.py
+│   │   ├── scanner_component.py
+│   │   ├── signal_component.py
+│   │   ├── smc_component.py
+│   │   ├── summary_component.py
+│   │   └── trade_component.py
+│   └── dashboard.py
+├── data
+│   ├── __init__.py
+│   ├── csv
+│   │   ├── MARICO.NS_15m.csv
+│   │   ├── MARICO.NS_1d.csv
+│   │   ├── MARICO.NS_1h.csv
+│   │   └── MARICO.NS_5m.csv
+│   ├── json
+│   │   ├── MARICO.NS_15m.json
+│   │   ├── MARICO.NS_1d.json
+│   │   ├── MARICO.NS_1h.json
+│   │   └── MARICO.NS_5m.json
+│   └── stocks.py
+├── docs
+│   ├── architecture
+│   │   ├── architecture_principles.md
+│   │   └── selection_framework.md 
+│   ├── core_engine_v1.md
+│   ├── mathematics
+│   │   ├── axioms.md
+│   │   ├── definitions.md
+│   │   └── theorems.md
+│   ├── origin_region_policy.md
+│   ├── segment_specification_v1.md
+│   └── specifications
+│       ├── order_block_spec.md
+│       └── order_block_v1.0.md
+├── engines
+│   ├── __init__.py
+│   ├── confluence_engine.py
+│   ├── data_engine.py
+│   ├── expansion_engine.py
+│   ├── fair_value_gap_engine.py
+│   ├── fvg_engine.py
+│   ├── historical_signal_engine.py
+│   ├── indicator_engine.py
+│   ├── liquidity_engine.py
+│   ├── market_state_engine.py
+│   ├── market_structure.py
+│   ├── multitimeframe_engine.py
+│   ├── order_block_engine.py
+│   ├── origin_region_builder.py
+│   ├── origin_region_engine.py
+│   ├── position_engine.py
+│   ├── premium_discount_engine.py
+│   ├── probability_engine.py
+│   ├── rating_engine.py
+│   ├── risk_engine.py
+│   ├── scanner_engine.py
+│   ├── segment_engine.py
+│   ├── signal_engine.py
+│   ├── smc_engine.py
+│   ├── structure_event_engine.py
+│   ├── swing_engine.py
+│   └── validation_engine.py
+├── fetcher.py
+├── logs
+├── models
+│   ├── __init__.py
+│   ├── candle.py
+│   ├── expansion.py
+│   ├── fair_value_gap.py
+│   ├── liquidity_region.py
+│   ├── order_block.py
+│   ├── order_block_fvg_overlap.py
+│   ├── order_block_geometry.py
+│   ├── origin_region.py
+│   ├── segment.py
+│   ├── signal.py
+│   ├── structure_event.py
+│   └── trade.py
+├── policies
+│   ├── fair_value_gap
+│   │   ├── base_fvg_policy.py
+│   │   ├── ict
+│   │   │   └── ict_fvg_policy.py
+│   │   └── ict_three_candle_policy.py
+│   ├── liquidity
+│   │   └── equal_high_policy.py
+│   ├── order_block
+│   │   ├── base_projection_policy.py
+│   │   ├── full_candle_policy.py
+│   │   ├── ict
+│   │   │   ├── ict_order_block_candidate_generator.py
+│   │   │   └── ict_projection_policy.py
+│   │   └── order_block_policy.py
+│   └── origin_region
+│       ├── __init__.py
+│       ├── base.py
+│       ├── base_origin_region_policy.py
+│       ├── ict
+│       │   ├── ict_origin_candidate_generator.py
+│       │   └── ict_origin_selection_policy.py
+│       ├── ict_origin_region_policy.py
+│       └── last_opposite_candle_policy.py
+├── protected_swings_validation.csv
+├── reports
+├── requirements.txt
+├── research
+│   ├── README.md
+│   ├── experiments.md
+│   ├── order_block_design.md
+│   └── strategy_notes.md
+├── scanner
+│   └── watchlist.py
+├── services
+│   ├── __init__.py
+│   ├── analysis_service.py
+│   ├── confluence
+│   │   └── order_block_fvg_service.py
+│   ├── dashboard_service.py
+│   └── market_analysis_engine.py
+├── test_market_structure.py
+├── tests
+│   ├── __init__.py
+│   ├── test_analysis_service.py
+│   ├── test_confluence.py
+│   ├── test_continuation_rule.py
+│   ├── test_data.py
+│   ├── test_equal_high_policy.py
+│   ├── test_expansion_engine.py
+│   ├── test_fair_value_gap.py
+│   ├── test_fair_value_gap_engine.py
+│   ├── test_full_candle_policy.py
+│   ├── test_fvg.py
+│   ├── test_fvg_policy.py
+│   ├── test_ict_fvg_policy.py
+│   ├── test_ict_order_block_candidate_generator.py
+│   ├── test_ict_origin_candidate_generator.py
+│   ├── test_ict_origin_selection_policy.py
+│   ├── test_ict_projection_policy.py
+│   ├── test_indicator.py
+│   ├── test_last_opposite_candle_policy.py
+│   ├── test_liquidity.py
+│   ├── test_market_analysis_engine.py
+│   ├── test_market_configuration.py
+│   ├── test_market_state_engine.py
+│   ├── test_market_structure.py
+│   ├── test_multitimeframe.py
+│   ├── test_order_block.py
+│   ├── test_order_block_builder.py
+│   ├── test_order_block_fvg_service.py
+│   ├── test_origin_region_builder.py
+│   ├── test_origin_region_engine.py
+│   ├── test_position.py
+│   ├── test_premium_discount.py
+│   ├── test_probability.py
+│   ├── test_rating.py
+│   ├── test_real_expansions.py
+│   ├── test_real_fvg.py
+│   ├── test_real_liquidity.py
+│   ├── test_real_order_block.py
+│   ├── test_real_origin_region.py
+│   ├── test_real_segments.py
+│   ├── test_scanner.py
+│   ├── test_segment.py
+│   ├── test_segment_engine.py
+│   ├── test_signal.py
+│   ├── test_smc.py
+│   ├── test_structure_events.py
+│   ├── test_structure_invariants.py
+│   └── test_swing_detector.py
+├── theory_1.0
+│   ├── 01_SEMANTIC_FOUNDATION.md
+│   ├── 02_MARKET_STRUCTURE_ONTOLOGY.md
+│   ├── 03_Computational Model.md
+│   ├── 04_Verification.md
+│   └── 05_Project Philosophy.md
+├── utils
+│   ├── __init__.py
+│   ├── chart.py
+│   ├── logger.py
+│   └── market_utils.py
+└── z.py
+
+41 directories, 199 files
