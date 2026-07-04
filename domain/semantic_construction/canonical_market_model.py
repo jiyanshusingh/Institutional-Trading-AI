@@ -39,6 +39,8 @@ class CanonicalMarketModel:
     swings: Tuple[Any, ...] = ()
 
     structure_events: Tuple[Any, ...] = ()
+    
+    protected_swings: Tuple[Any, ...] = ()
 
     expansions: Tuple[Any, ...] = ()
 
@@ -78,7 +80,31 @@ class CanonicalMarketModel:
     @property
     def observation_count(self) -> int:
         return len(self.observation_history)
+    
+    @property
+    def swing_count(self) -> int:
+        return len(self.swings)
 
+
+    @property
+    def structure_event_count(self) -> int:
+        return len(self.structure_events)
+    
+    @property
+    def protected_swing_count(self) -> int:
+        return len(self.protected_swings)
+    
+    @property
+    def expansion_count(self) -> int:
+        return len(self.expansions)
+    
+    @property
+    def origin_region_count(self) -> int:
+        return len(self.origin_regions)
+    
+    @property
+    def fair_value_gap_count(self) -> int:
+        return len(self.fair_value_gaps)
     # ------------------------------------------------------------------
     # Summary
     # ------------------------------------------------------------------
@@ -92,6 +118,7 @@ class CanonicalMarketModel:
             "observations": len(self.observation_history),
             "swings": len(self.swings),
             "structure_events": len(self.structure_events),
+            "protected_swings": len(self.protected_swings),
             "expansions": len(self.expansions),
             "origin_regions": len(self.origin_regions),
             "fair_value_gaps": len(self.fair_value_gaps),
