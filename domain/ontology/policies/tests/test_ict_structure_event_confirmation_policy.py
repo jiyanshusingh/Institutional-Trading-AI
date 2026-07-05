@@ -21,7 +21,7 @@ from domain.ontology.policies.ict.ict_structure_event_confirmation_policy import
 from domain.ontology.policies.structure_event_confirmation_result import (
     StructureEventConfirmationResult,
 )
-
+from domain.ontology.swing import Swing
 
 def create_history():
 
@@ -57,7 +57,14 @@ def create_history():
         metadata=metadata,
     )
 
+def create_swings() -> tuple[Swing, ...]:
+    """
+    Placeholder detector currently ignores swings.
 
+    An empty tuple is sufficient until
+    BOS/CHOCH detection is implemented.
+    """
+    return ()
 def test_confirm_returns_confirmation_result():
 
     candidate = StructureEventCandidate(
@@ -74,10 +81,10 @@ def test_confirm_returns_confirmation_result():
     policy = ICTStructureEventConfirmationPolicy()
 
     result = policy.confirm(
-        candidate,
-        create_history(),
+        candidate=candidate,
+        observation_history=create_history(),
+        swings=create_swings(),
     )
-
     assert result.confirmed is True
 
 
@@ -97,8 +104,9 @@ def test_confirmation_index_matches_candidate():
     policy = ICTStructureEventConfirmationPolicy()
 
     result = policy.confirm(
-        candidate,
-        create_history(),
+        candidate=candidate,
+        observation_history=create_history(),
+        swings=create_swings(),
     )
 
     assert result.confirmation_index == candidate.candle_index
@@ -120,8 +128,9 @@ def test_returns_confirmation_result_object():
     policy = ICTStructureEventConfirmationPolicy()
 
     result = policy.confirm(
-        candidate,
-        create_history(),
+        candidate=candidate,
+        observation_history=create_history(),
+        swings=create_swings(),
     )
 
     assert isinstance(
@@ -146,4 +155,31 @@ def test_requires_history():
     policy = ICTStructureEventConfirmationPolicy()
 
     with pytest.raises(ValueError):
-        policy.confirm(candidate, None)
+        policy.confirm(
+            candidate=candidate,
+            observation_history=None,
+            swings=create_swings(),
+        )
+
+def test_requires_swings():
+
+    candidate = StructureEventCandidate(
+        event_type=StructureEventType.BOS,
+        direction=StructureDirection.BULLISH,
+        timestamp=datetime.now(),
+        candle_index=1,
+        broken_swing_index=0,
+        base_swing_index=0,
+        price=100,
+        displacement=2,
+    )
+
+    policy = ICTStructureEventConfirmationPolicy()
+
+    with pytest.raises(ValueError):
+
+        policy.confirm(
+            candidate=candidate,
+            observation_history=create_history(),
+            swings=None,
+        )

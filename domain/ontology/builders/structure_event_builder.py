@@ -5,9 +5,13 @@ Constructs immutable StructureEvent objects from
 confirmed StructureEvent candidates.
 """
 
+from __future__ import annotations
+
 from domain.market_observation.observation_history import (
     ObservationHistory,
 )
+
+from domain.ontology.swing import Swing
 
 from domain.ontology.structure_event import (
     StructureEvent,
@@ -23,6 +27,21 @@ from domain.ontology.policies.structure_event_confirmation_policy import (
 
 
 class StructureEventBuilder:
+    """
+    Builds immutable StructureEvent objects.
+
+    This builder coordinates:
+
+        ObservationHistory
+                +
+        Confirmed Swings
+                ↓
+        Candidate Detection
+                ↓
+        Confirmation
+                ↓
+        StructureEvent Construction
+    """
 
     def __init__(
         self,
@@ -36,6 +55,7 @@ class StructureEventBuilder:
     def build(
         self,
         observation_history: ObservationHistory,
+        swings: tuple[Swing, ...],
     ) -> tuple[StructureEvent, ...]:
 
         if observation_history is None:
@@ -43,19 +63,34 @@ class StructureEventBuilder:
                 "ObservationHistory is required."
             )
 
+        if swings is None:
+            raise ValueError(
+                "Confirmed swings are required."
+            )
+
+        # ---------------------------------------------
+        # Detect Candidates
+        # ---------------------------------------------
+
         candidates = self._detector.detect(
-            observation_history
+            observation_history=observation_history,
+            swings=swings,
         )
 
-        events = []
+        # ---------------------------------------------
+        # Confirm Candidates
+        # ---------------------------------------------
+
+        events: list[StructureEvent] = []
 
         event_id = 1
 
         for candidate in candidates:
 
             result = self._confirmation_policy.confirm(
-                candidate,
-                observation_history,
+                candidate=candidate,
+                observation_history=observation_history,
+                swings=swings,
             )
 
             if not result.confirmed:

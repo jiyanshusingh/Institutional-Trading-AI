@@ -178,6 +178,7 @@ class SemanticConstructionPipeline:
             structure_events = (
                 self._structure_event_builder.build(
                     observation_history,
+                    swings=swings,
                 )
             )
 

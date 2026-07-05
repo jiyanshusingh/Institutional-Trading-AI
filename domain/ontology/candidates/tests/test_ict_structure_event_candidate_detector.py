@@ -15,6 +15,8 @@ from domain.ontology.candidates.ict.ict_structure_event_candidate_detector impor
     ICTStructureEventCandidateDetector,
 )
 
+from domain.ontology.swing import Swing
+
 
 def create_history():
 
@@ -51,12 +53,23 @@ def create_history():
     )
 
 
+def create_swings() -> tuple[Swing, ...]:
+    """
+    Placeholder detector currently ignores swings.
+
+    An empty tuple is sufficient until the
+    BOS/CHOCH implementation is added.
+    """
+    return ()
+
+
 def test_returns_tuple():
 
     detector = ICTStructureEventCandidateDetector()
 
     candidates = detector.detect(
-        create_history(),
+        observation_history=create_history(),
+        swings=create_swings(),
     )
 
     assert isinstance(candidates, tuple)
@@ -67,7 +80,8 @@ def test_initially_returns_empty_tuple():
     detector = ICTStructureEventCandidateDetector()
 
     candidates = detector.detect(
-        create_history(),
+        observation_history=create_history(),
+        swings=create_swings(),
     )
 
     assert len(candidates) == 0
@@ -79,4 +93,19 @@ def test_requires_history():
 
     with pytest.raises(ValueError):
 
-        detector.detect(None)
+        detector.detect(
+            observation_history=None,
+            swings=create_swings(),
+        )
+
+
+def test_requires_swings():
+
+    detector = ICTStructureEventCandidateDetector()
+
+    with pytest.raises(ValueError):
+
+        detector.detect(
+            observation_history=create_history(),
+            swings=None,
+        )
