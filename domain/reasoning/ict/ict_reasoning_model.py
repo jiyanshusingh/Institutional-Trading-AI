@@ -1,13 +1,13 @@
 from __future__ import annotations
-
 from datetime import UTC, datetime
 from uuid import uuid4
-
 from domain.reasoning.contracts.reasoning_model import ReasoningModel
 from domain.reasoning.structural_context import StructuralContext
 from domain.thesis.market_thesis import MarketThesis
 from domain.ontology.expansion import ExpansionDirection
 from domain.ontology.structure_event import StructureEventType
+from domain.reasoning.evidence_assessment import EvidenceAssessment
+from domain.reasoning.reasoning_quality import ReasoningQuality
 
 class ICTReasoningModel(ReasoningModel):
     """
@@ -68,16 +68,34 @@ class ICTReasoningModel(ReasoningModel):
             protected_structure,
         )
 
+        # ----------------------------------------------------------
+        # Assess evidence quality
+        # ----------------------------------------------------------
+
+        evidence_assessment = self._assess_evidence_quality(
+            supporting_evidence,
+            counter_evidence,
+        )
+
+        # ----------------------------------------------------------
+        # Construct thesis
+        # ----------------------------------------------------------
+
         thesis = self._construct_market_thesis(
             market=market,
             context=structural_context,
             supporting_evidence=supporting_evidence,
             counter_evidence=counter_evidence,
+            evidence_assessment=evidence_assessment,
             objectives=objectives,
+        )
+        
+        reasoning_quality = self._assess_reasoning_quality(
+            thesis,
+            evidence_assessment,
         )
 
         return (thesis,)
-
     # ==============================================================
     # Semantic Queries
     # ==============================================================
@@ -206,8 +224,125 @@ class ICTReasoningModel(ReasoningModel):
             evidence.append("Recent CHOCH")
 
         return tuple(evidence)
+# ==============================================================
+# Evidence Assessment
+# ==============================================================
+    def _assess_evidence_quality(
+        self,
+        supporting_evidence: tuple[str, ...],
+        counter_evidence: tuple[str, ...],
+    ) -> EvidenceAssessment:
+        """
+        Assess how well the current Market Thesis is supported
+        by the available evidence.
 
-        # ==============================================================
+        Version 1 uses simple deterministic rules.
+        """
+
+        supporting_count = len(supporting_evidence)
+        counter_count = len(counter_evidence)
+
+        if supporting_count >= 3 and counter_count == 0:
+
+            level = "STRONG"
+
+            rationale = (
+                "Multiple independent observations support "
+                "the current structural interpretation."
+            )
+
+        elif supporting_count >= 2 and counter_count <= 1:
+
+            level = "MODERATE"
+
+            rationale = (
+                "Supporting evidence outweighs "
+                "counter evidence."
+            )
+
+        else:
+
+            level = "WEAK"
+
+            rationale = (
+                "The current thesis has limited support "
+                "or significant contradictory evidence."
+            )
+
+        return EvidenceAssessment(
+            level=level,
+            supporting_count=supporting_count,
+            counter_count=counter_count,
+            rationale=rationale,
+        )
+    # ==============================================================
+    # Reasoning Quality Assessment
+    # ==============================================================
+    
+    def _assess_reasoning_quality(
+        self,
+        thesis: MarketThesis,
+        evidence_assessment,
+    ) -> ReasoningQuality:
+        """
+        Assess the quality of the reasoning used to construct
+        the Market Thesis.
+
+        Version 1 uses deterministic rule-based evaluation.
+        """
+
+        complete = (
+            bool(thesis.central_claim)
+            and bool(thesis.supporting_evidence)
+            and bool(thesis.expected_structural_evolution)
+            and bool(thesis.invalidation)
+        )
+
+        explainable = (
+            len(thesis.supporting_evidence) > 0
+        )
+
+        falsifiable = thesis.is_falsifiable()
+
+        internally_consistent = True
+
+        evidence_supported = (
+            evidence_assessment.level != "WEAK"
+        )
+
+        score = sum(
+            (
+                complete,
+                explainable,
+                falsifiable,
+                internally_consistent,
+                evidence_supported,
+            )
+        )
+
+        if score == 5:
+            level = "HIGH"
+
+        elif score >= 3:
+            level = "MEDIUM"
+
+        else:
+            level = "LOW"
+
+        return ReasoningQuality(
+            level=level,
+            complete=complete,
+            explainable=explainable,
+            falsifiable=falsifiable,
+            internally_consistent=internally_consistent,
+            evidence_supported=evidence_supported,
+            rationale=(
+                f"Reasoning satisfied "
+                f"{score} of 5 quality criteria."
+            ),
+        )
+
+    # ==============================================================
     # Thesis Generation
     # ==============================================================
 
@@ -292,6 +427,7 @@ class ICTReasoningModel(ReasoningModel):
         context,
         supporting_evidence,
         counter_evidence,
+        evidence_assessment,
         objectives,
     ) -> MarketThesis:
 
@@ -333,5 +469,5 @@ class ICTReasoningModel(ReasoningModel):
                 "Confirmed opposing CHOCH.",
             ),
 
-            uncertainty="MODERATE",
+            uncertainty=evidence_assessment.level,
         )
