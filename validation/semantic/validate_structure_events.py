@@ -64,8 +64,10 @@ def main():
         confirmation_policy=ICTStructureEventConfirmationPolicy(),
     )
 
-    events = structure_builder.build(history)
-
+    events = structure_builder.build(
+        observation_history=history,
+        swings=swings,
+    )
     print()
     print("=" * 60)
     print("STRUCTURE EVENTS")
@@ -82,9 +84,33 @@ def main():
     print()
     print("First 10 Structure Events")
     print("-" * 60)
+    
+    print()
+    print("First 10 Bullish BOS")
+
+    for event in events[:10]:
+        print(
+            f"{event.event_type.name} | "
+            f"{event.direction.name} | "
+            f"Swing={event.broken_swing_index} | "
+            f"Candle={event.candle_index} | "
+            f"Price={event.price:.2f}"
+        )
 
     for event in events[:10]:
         print(event)
+        
+    print()
+    print("=" * 60)
+    print("SUMMARY")
+    print("=" * 60)
+
+    high_swings = sum(1 for s in swings if s.is_high)
+    low_swings = sum(1 for s in swings if s.is_low)
+
+    print(f"High Swings : {high_swings}")
+    print(f"Low Swings  : {low_swings}")
+    print(f"BOS Events  : {len(events)}")
 
 
 if __name__ == "__main__":

@@ -3,14 +3,9 @@ ICT Structure Event Candidate Detector
 
 Theory 1.0
 
-Detects candidate BOS and CHOCH events from
-confirmed swings.
+Commit 2
 
-Commit 1
-
-- Validate inputs
-- Iterate confirmed swings
-- No BOS detection yet
+Implements Bullish BOS candidate detection.
 """
 
 from __future__ import annotations
@@ -20,7 +15,12 @@ from domain.market_observation.observation_history import (
 )
 
 from domain.ontology.swing import Swing
-from domain.ontology.swing import SwingType
+from domain.ontology.swing_type import SwingType
+
+from domain.ontology.structure_event import (
+    StructureEventType,
+    StructureDirection,
+)
 
 from domain.ontology.candidates.structure_event_candidate import (
     StructureEventCandidate,
@@ -34,14 +34,6 @@ from ..structure_event_candidate_detector import (
 class ICTStructureEventCandidateDetector(
     StructureEventCandidateDetector
 ):
-    """
-    Version 1
-    Commit 1
-
-    Traverses confirmed swings.
-
-    No BOS candidates are produced yet.
-    """
 
     def detect(
         self,
@@ -64,23 +56,85 @@ class ICTStructureEventCandidateDetector(
 
         candidates: list[StructureEventCandidate] = []
 
-        #
-        # Commit 1
-        #
-        # Traverse swings only.
-        #
-        for swing in swings:
+        candidates.extend(
+            self._detect_bullish_bos(
+                observation_history,
+                swings,
+            )
+        )
 
-            #
-            # Bullish BOS will use HIGH swings.
-            #
-            if swing.swing_type == SwingType.HIGH:
-                continue
-
-            #
-            # Bearish BOS will use LOW swings.
-            #
-            if swing.swing_type == SwingType.LOW:
-                continue
+        #
+        # Commit 3
+        #
+        # candidates.extend(
+        #     self._detect_bearish_bos(...)
+        # )
 
         return tuple(candidates)
+
+    # ---------------------------------------------------------
+    # Bullish BOS
+    # ---------------------------------------------------------
+
+    def _detect_bullish_bos(
+        self,
+        observation_history: ObservationHistory,
+        swings: tuple[Swing, ...],
+    ) -> list[StructureEventCandidate]:
+
+        candidates: list[StructureEventCandidate] = []
+
+        observations = observation_history.observations
+
+        for swing in swings:
+
+            if swing.swing_type != SwingType.HIGH:
+                continue
+
+            start = swing.confirmation_index + 1
+
+            for candle_index in range(
+                start,
+                len(observations),
+            ):
+
+                candle = observations[candle_index]
+
+                #
+                # BOS Rule
+                #
+                if candle.close <= swing.price:
+                    continue
+
+                candidates.append(
+
+                    StructureEventCandidate(
+
+                        event_type=StructureEventType.BOS,
+
+                        direction=StructureDirection.BULLISH,
+
+                        timestamp=candle.timestamp,
+
+                        candle_index=candle_index,
+
+                        broken_swing_index=swing.index,
+
+                        base_swing_index=swing.index,
+
+                        price=candle.close,
+
+                        displacement=(
+                            candle.close - swing.price
+                        ),
+
+                    )
+
+                )
+
+                #
+                # First break wins.
+                #
+                break
+
+        return candidates
