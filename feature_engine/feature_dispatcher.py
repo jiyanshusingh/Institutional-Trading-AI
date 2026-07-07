@@ -26,6 +26,7 @@ from __future__ import annotations
 # ==========================================================
 
 from .features.price import PriceFeatures
+from .features.volume import VolumeFeatures
 
 # Future modules
 # from .features.volume import VolumeFeatures
@@ -81,7 +82,25 @@ PRICE_DISPATCHER = {
 
 VOLUME_DISPATCHER = {
 
-    # "relative_volume": VolumeFeatures.relative_volume,
+    "volume": VolumeFeatures.volume,
+
+    "volume_change": VolumeFeatures.volume_change,
+
+    "volume_change_percent": VolumeFeatures.volume_change_percent,
+
+    "volume_ma_5": VolumeFeatures.volume_ma_5,
+
+    "volume_ma_10": VolumeFeatures.volume_ma_10,
+
+    "volume_ma_20": VolumeFeatures.volume_ma_20,
+
+    "relative_volume_5": VolumeFeatures.relative_volume_5,
+
+    "relative_volume_10": VolumeFeatures.relative_volume_10,
+
+    "relative_volume_20": VolumeFeatures.relative_volume_20,
+
+    "cumulative_volume": VolumeFeatures.cumulative_volume,
 
 }
 

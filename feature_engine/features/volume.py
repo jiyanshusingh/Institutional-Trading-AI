@@ -3,19 +3,11 @@
 Volume Features
 ==========================================================
 
-Purpose
--------
-Deterministic volume feature computations.
+Deterministic volume-based market features.
 
-This module contains NO:
-
-- Trading logic
-- AI
-- Strategy logic
-- Research
-
-Only mathematical feature computation.
-
+No trading logic.
+No AI.
+No research.
 ==========================================================
 """
 
@@ -25,16 +17,13 @@ import pandas as pd
 
 
 class VolumeFeatures:
-    """
-    Deterministic volume features.
-    """
 
     # ======================================================
-    # Helpers
+    # Helper
     # ======================================================
 
     @staticmethod
-    def _safe_divide(
+    def safe_divide(
         numerator: pd.Series,
         denominator: pd.Series,
     ) -> pd.Series:
@@ -50,7 +39,7 @@ class VolumeFeatures:
         )
 
     # ======================================================
-    # Raw Volume
+    # Base Features
     # ======================================================
 
     @staticmethod
@@ -58,46 +47,117 @@ class VolumeFeatures:
         df: pd.DataFrame,
     ) -> pd.DataFrame:
         """
-        Copy raw traded volume.
-
-        Added for naming consistency.
+        Raw traded volume.
         """
 
         df["volume"] = df["volume"]
 
         return df
 
-    # ======================================================
-    # Volume Moving Average
-    # ======================================================
-
     @staticmethod
-    def volume_ma20(
+    def cumulative_volume(
         df: pd.DataFrame,
     ) -> pd.DataFrame:
         """
-        20-period average volume.
+        Running cumulative traded volume.
         """
 
-        df["volume_ma20"] = (
+        df["cumulative_volume"] = (
+            df["volume"].cumsum()
+        )
+
+        return df
+
+    # ======================================================
+    # Delta Features
+    # ======================================================
+
+    @staticmethod
+    def volume_change(
+        df: pd.DataFrame,
+    ) -> pd.DataFrame:
+        """
+        Current volume minus previous volume.
+        """
+
+        df["volume_change"] = (
+            df["volume"].diff()
+        )
+
+        return df
+
+    @staticmethod
+    def volume_change_percent(
+        df: pd.DataFrame,
+    ) -> pd.DataFrame:
+        """
+        Percentage change in volume.
+        """
+
+        if "volume_change" not in df.columns:
+            df = VolumeFeatures.volume_change(df)
+
+        previous_volume = (
+            df["volume"].shift(1)
+        )
+
+        df["volume_change_percent"] = (
+            VolumeFeatures.safe_divide(
+                df["volume_change"],
+                previous_volume,
+            )
+            * 100
+        )
+
+        return df
+
+    # ======================================================
+    # Moving Averages
+    # ======================================================
+
+    @staticmethod
+    def volume_ma_5(
+        df: pd.DataFrame,
+    ) -> pd.DataFrame:
+        """
+        5-period volume average.
+        """
+
+        df["volume_ma_5"] = (
             df["volume"]
-            .rolling(20)
+            .rolling(5)
             .mean()
         )
 
         return df
 
     @staticmethod
-    def volume_ma50(
+    def volume_ma_10(
         df: pd.DataFrame,
     ) -> pd.DataFrame:
         """
-        50-period average volume.
+        10-period volume average.
         """
 
-        df["volume_ma50"] = (
+        df["volume_ma_10"] = (
             df["volume"]
-            .rolling(50)
+            .rolling(10)
+            .mean()
+        )
+
+        return df
+
+    @staticmethod
+    def volume_ma_20(
+        df: pd.DataFrame,
+    ) -> pd.DataFrame:
+        """
+        20-period volume average.
+        """
+
+        df["volume_ma_20"] = (
+            df["volume"]
+            .rolling(20)
             .mean()
         )
 
@@ -108,142 +168,61 @@ class VolumeFeatures:
     # ======================================================
 
     @staticmethod
-    def relative_volume(
+    def relative_volume_5(
         df: pd.DataFrame,
     ) -> pd.DataFrame:
         """
-        Current Volume / 20-period Average Volume
+        Current volume / 5-period average.
         """
 
-        if "volume_ma20" not in df.columns:
+        if "volume_ma_5" not in df.columns:
+            df = VolumeFeatures.volume_ma_5(df)
 
-            df = VolumeFeatures.volume_ma20(df)
-
-        df["relative_volume"] = (
-            VolumeFeatures._safe_divide(
+        df["relative_volume_5"] = (
+            VolumeFeatures.safe_divide(
                 df["volume"],
-                df["volume_ma20"],
+                df["volume_ma_5"],
             )
         )
 
         return df
 
-    # ======================================================
-    # Volume Change
-    # ======================================================
-
     @staticmethod
-    def volume_change(
+    def relative_volume_10(
         df: pd.DataFrame,
     ) -> pd.DataFrame:
         """
-        Percentage change in volume.
+        Current volume / 10-period average.
         """
 
-        df["volume_change"] = (
-            df["volume"]
-            .pct_change()
-        )
+        if "volume_ma_10" not in df.columns:
+            df = VolumeFeatures.volume_ma_10(df)
 
-        return df
-
-    # ======================================================
-    # Volume Z-Score
-    # ======================================================
-
-    @staticmethod
-    def volume_zscore(
-        df: pd.DataFrame,
-        window: int = 20,
-    ) -> pd.DataFrame:
-        """
-        Rolling Z-score of volume.
-        """
-
-        mean = (
-            df["volume"]
-            .rolling(window)
-            .mean()
-        )
-
-        std = (
-            df["volume"]
-            .rolling(window)
-            .std()
-        )
-
-        df["volume_zscore"] = (
-            VolumeFeatures._safe_divide(
-                df["volume"] - mean,
-                std,
+        df["relative_volume_10"] = (
+            VolumeFeatures.safe_divide(
+                df["volume"],
+                df["volume_ma_10"],
             )
         )
 
         return df
 
-    # ======================================================
-    # Volume Percentile
-    # ======================================================
-
     @staticmethod
-    def volume_percentile(
+    def relative_volume_20(
         df: pd.DataFrame,
-        window: int = 100,
     ) -> pd.DataFrame:
         """
-        Rolling percentile rank of volume.
+        Current volume / 20-period average.
         """
 
-        df["volume_percentile"] = (
-            df["volume"]
-            .rolling(window)
-            .rank(pct=True)
-        )
+        if "volume_ma_20" not in df.columns:
+            df = VolumeFeatures.volume_ma_20(df)
 
-        return df
-
-    # ======================================================
-    # High Volume Candle
-    # ======================================================
-
-    @staticmethod
-    def high_volume_candle(
-        df: pd.DataFrame,
-        threshold: float = 2.0,
-    ) -> pd.DataFrame:
-        """
-        High-volume flag based on Relative Volume.
-        """
-
-        if "relative_volume" not in df.columns:
-
-            df = VolumeFeatures.relative_volume(df)
-
-        df["high_volume_candle"] = (
-            df["relative_volume"] >= threshold
-        )
-
-        return df
-
-    # ======================================================
-    # Low Volume Candle
-    # ======================================================
-
-    @staticmethod
-    def low_volume_candle(
-        df: pd.DataFrame,
-        threshold: float = 0.5,
-    ) -> pd.DataFrame:
-        """
-        Low-volume flag based on Relative Volume.
-        """
-
-        if "relative_volume" not in df.columns:
-
-            df = VolumeFeatures.relative_volume(df)
-
-        df["low_volume_candle"] = (
-            df["relative_volume"] <= threshold
+        df["relative_volume_20"] = (
+            VolumeFeatures.safe_divide(
+                df["volume"],
+                df["volume_ma_20"],
+            )
         )
 
         return df

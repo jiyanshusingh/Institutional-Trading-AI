@@ -287,23 +287,104 @@ FEATURES = {
     # ------------------------------------------------------
     # Volume
     # ------------------------------------------------------
-
-    "relative_volume": Feature(
-
-        name="Relative Volume",
-
+    "volume": Feature(
+        name="Volume",
         category=FeatureCategory.VOLUME,
-
-        description="Current volume relative to average",
-
-        units="Ratio",
-
+        description="Raw traded volume",
+        units="Shares",
         deterministic=True,
-
-        status=FeatureStatus.PLANNED,
-
+        status=FeatureStatus.CORE,
         dependencies=("volume",),
+    ),
 
+    "volume_change": Feature(
+        name="Volume Change",
+        category=FeatureCategory.VOLUME,
+        description="Difference from previous candle volume",
+        units="Shares",
+        deterministic=True,
+        status=FeatureStatus.PLANNED,
+        dependencies=("volume",),
+    ),
+
+    "volume_change_percent": Feature(
+        name="Volume Change Percent",
+        category=FeatureCategory.VOLUME,
+        description="Percentage change from previous volume",
+        units="Percent",
+        deterministic=True,
+        status=FeatureStatus.PLANNED,
+        dependencies=("volume_change","volume",),
+    ),
+
+    "volume_ma_5": Feature(
+        name="Volume MA 5",
+        category=FeatureCategory.VOLUME,
+        description="5-period moving average of volume",
+        units="Shares",
+        deterministic=True,
+        status=FeatureStatus.PLANNED,
+        dependencies=("volume",),
+    ),
+
+    "volume_ma_10": Feature(
+        name="Volume MA 10",
+        category=FeatureCategory.VOLUME,
+        description="10-period moving average of volume",
+        units="Shares",
+        deterministic=True,
+        status=FeatureStatus.PLANNED,
+        dependencies=("volume",),
+    ),
+
+    "volume_ma_20": Feature(
+        name="Volume MA 20",
+        category=FeatureCategory.VOLUME,
+        description="20-period moving average of volume",
+        units="Shares",
+        deterministic=True,
+        status=FeatureStatus.PLANNED,
+        dependencies=("volume",),
+    ),
+
+    "relative_volume_5": Feature(
+        name="Relative Volume 5",
+        category=FeatureCategory.VOLUME,
+        description="Current volume divided by 5-period average volume",
+        units="Ratio",
+        deterministic=True,
+        status=FeatureStatus.PLANNED,
+        dependencies=("volume", "volume_ma_5"),
+    ),
+
+    "relative_volume_10": Feature(
+        name="Relative Volume 10",
+        category=FeatureCategory.VOLUME,
+        description="Current volume divided by 10-period average volume",
+        units="Ratio",
+        deterministic=True,
+        status=FeatureStatus.PLANNED,
+        dependencies=("volume", "volume_ma_10"),
+    ),
+
+    "relative_volume_20": Feature(
+        name="Relative Volume 20",
+        category=FeatureCategory.VOLUME,
+        description="Current volume divided by 20-period average volume",
+        units="Ratio",
+        deterministic=True,
+        status=FeatureStatus.PLANNED,
+        dependencies=("volume", "volume_ma_20"),
+    ),
+
+    "cumulative_volume": Feature(
+        name="Cumulative Volume",
+        category=FeatureCategory.VOLUME,
+        description="Running cumulative traded volume",
+        units="Shares",
+        deterministic=True,
+        status=FeatureStatus.PLANNED,
+        dependencies=("volume",),
     ),
 
     # ------------------------------------------------------
