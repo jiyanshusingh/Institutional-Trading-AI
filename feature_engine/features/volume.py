@@ -14,30 +14,13 @@ No research.
 from __future__ import annotations
 
 import pandas as pd
-
+from feature_engine.features.utils import FeatureUtils
 
 class VolumeFeatures:
 
     # ======================================================
     # Helper
     # ======================================================
-
-    @staticmethod
-    def safe_divide(
-        numerator: pd.Series,
-        denominator: pd.Series,
-    ) -> pd.Series:
-        """
-        Safe division.
-
-        Division by zero returns NA.
-        """
-
-        return numerator / denominator.replace(
-            0,
-            pd.NA,
-        )
-
     # ======================================================
     # Base Features
     # ======================================================
@@ -102,7 +85,7 @@ class VolumeFeatures:
         )
 
         df["volume_change_percent"] = (
-            VolumeFeatures.safe_divide(
+            FeatureUtils.safe_divide(
                 df["volume_change"],
                 previous_volume,
             )
@@ -179,7 +162,7 @@ class VolumeFeatures:
             df = VolumeFeatures.volume_ma_5(df)
 
         df["relative_volume_5"] = (
-            VolumeFeatures.safe_divide(
+            FeatureUtils.safe_divide(
                 df["volume"],
                 df["volume_ma_5"],
             )
@@ -199,7 +182,7 @@ class VolumeFeatures:
             df = VolumeFeatures.volume_ma_10(df)
 
         df["relative_volume_10"] = (
-            VolumeFeatures.safe_divide(
+            FeatureUtils.safe_divide(
                 df["volume"],
                 df["volume_ma_10"],
             )
@@ -219,7 +202,7 @@ class VolumeFeatures:
             df = VolumeFeatures.volume_ma_20(df)
 
         df["relative_volume_20"] = (
-            VolumeFeatures.safe_divide(
+            FeatureUtils.safe_divide(
                 df["volume"],
                 df["volume_ma_20"],
             )

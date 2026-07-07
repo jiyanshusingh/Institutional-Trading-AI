@@ -58,7 +58,7 @@ class FeatureCategory(Enum):
     VOLATILITY = "Volatility"
 
     TREND = "Trend"
-
+    MOMENTUM = "Momentum"
     STRUCTURE = "Structure"
 
     LIQUIDITY = "Liquidity"
@@ -391,19 +391,1126 @@ FEATURES = {
     # Volatility
     # ------------------------------------------------------
 
-    "atr": Feature(
+    "true_range": Feature(
 
-        name="Average True Range",
+        name="True Range",
 
         category=FeatureCategory.VOLATILITY,
 
-        description="Average True Range",
+        description="Maximum of High-Low, High-Previous Close, Low-Previous Close",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("high", "low", "close"),
+
+    ),
+
+    "atr_5": Feature(
+
+        name="ATR 5",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="5-period Average True Range",
 
         units="Price",
 
         deterministic=True,
 
         status=FeatureStatus.PLANNED,
+
+        dependencies=("true_range",),
+
+    ),
+
+    "atr_10": Feature(
+
+        name="ATR 10",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="10-period Average True Range",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("true_range",),
+
+    ),
+
+    "atr_14": Feature(
+
+        name="ATR 14",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="14-period Average True Range",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("true_range",),
+
+    ),
+
+    "atr_20": Feature(
+
+        name="ATR 20",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="20-period Average True Range",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("true_range",),
+
+    ),
+
+    "range_ma_5": Feature(
+
+        name="Range MA 5",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="5-period moving average of candle range",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("candle_range",),
+
+    ),
+
+    "range_ma_10": Feature(
+
+        name="Range MA 10",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="10-period moving average of candle range",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("candle_range",),
+
+    ),
+
+    "range_ma_20": Feature(
+
+        name="Range MA 20",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="20-period moving average of candle range",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("candle_range",),
+
+    ),
+
+    "range_expansion": Feature(
+
+        name="Range Expansion",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="Current candle range relative to 20-period average range",
+
+        units="Ratio",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("candle_range", "range_ma_20"),
+
+    ),
+
+    "range_contraction": Feature(
+
+        name="Range Contraction",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="20-period average range relative to current candle range",
+
+        units="Ratio",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("candle_range", "range_ma_20"),
+
+    ),
+    "atr_percent_5": Feature(
+
+        name="ATR Percent 5",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="ATR 5 expressed as percentage of Close",
+
+        units="%",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("atr_5", "close"),
+
+    ),
+
+    "atr_percent_10": Feature(
+
+        name="ATR Percent 10",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="ATR 10 expressed as percentage of Close",
+
+        units="%",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("atr_10", "close"),
+
+    ),
+
+    "atr_percent_14": Feature(
+
+        name="ATR Percent 14",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="ATR 14 expressed as percentage of Close",
+
+        units="%",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("atr_14", "close"),
+
+    ),
+
+    "atr_percent_20": Feature(
+
+        name="ATR Percent 20",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="ATR 20 expressed as percentage of Close",
+
+        units="%",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("atr_20", "close"),
+
+    ),
+    "std_5": Feature(
+
+        name="Standard Deviation 5",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="5-period rolling standard deviation of Close",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "std_10": Feature(
+
+        name="Standard Deviation 10",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="10-period rolling standard deviation of Close",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "std_20": Feature(
+
+        name="Standard Deviation 20",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="20-period rolling standard deviation of Close",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close",),
+
+    ),
+
+    "variance_5": Feature(
+
+        name="Variance 5",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="5-period rolling variance of Close",
+
+        units="Price²",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "variance_10": Feature(
+
+        name="Variance 10",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="10-period rolling variance of Close",
+
+        units="Price²",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "variance_20": Feature(
+
+        name="Variance 20",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="20-period rolling variance of Close",
+
+        units="Price²",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close",),
+
+    ),
+    "atr_ratio": Feature(
+
+        name="ATR Ratio",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="ATR 14 divided by ATR 20",
+
+        units="Ratio",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("atr_14", "atr_20"),
+
+    ),
+
+    "volatility_expansion": Feature(
+
+        name="Volatility Expansion",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="ATR 14 increasing compared to previous candle",
+
+        units="Boolean",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("atr_14",),
+
+    ),
+
+    "volatility_compression": Feature(
+
+        name="Volatility Compression",
+
+        category=FeatureCategory.VOLATILITY,
+
+        description="ATR 14 decreasing compared to previous candle",
+
+        units="Boolean",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("atr_14",),
+
+    ),
+    "ema_5": Feature(
+
+        name="EMA 5",
+
+        category=FeatureCategory.TREND,
+
+        description="5-period Exponential Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "ema_9": Feature(
+
+        name="EMA 9",
+
+        category=FeatureCategory.TREND,
+
+        description="9-period Exponential Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "ema_10": Feature(
+
+        name="EMA 10",
+
+        category=FeatureCategory.TREND,
+
+        description="10-period Exponential Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "ema_20": Feature(
+
+        name="EMA 20",
+
+        category=FeatureCategory.TREND,
+
+        description="20-period Exponential Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close",),
+
+    ),
+
+    "ema_21": Feature(
+
+        name="EMA 21",
+
+        category=FeatureCategory.TREND,
+
+        description="21-period Exponential Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "ema_34": Feature(
+
+        name="EMA 34",
+
+        category=FeatureCategory.TREND,
+
+        description="34-period Exponential Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "ema_50": Feature(
+
+        name="EMA 50",
+
+        category=FeatureCategory.TREND,
+
+        description="50-period Exponential Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close",),
+
+    ),
+
+    "ema_100": Feature(
+
+        name="EMA 100",
+
+        category=FeatureCategory.TREND,
+
+        description="100-period Exponential Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "ema_200": Feature(
+
+        name="EMA 200",
+
+        category=FeatureCategory.TREND,
+
+        description="200-period Exponential Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close",),
+
+    ),
+    "sma_5": Feature(
+
+        name="SMA 5",
+
+        category=FeatureCategory.TREND,
+
+        description="5-period Simple Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "sma_10": Feature(
+
+        name="SMA 10",
+
+        category=FeatureCategory.TREND,
+
+        description="10-period Simple Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "sma_20": Feature(
+
+        name="SMA 20",
+
+        category=FeatureCategory.TREND,
+
+        description="20-period Simple Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close",),
+
+    ),
+
+    "sma_50": Feature(
+
+        name="SMA 50",
+
+        category=FeatureCategory.TREND,
+
+        description="50-period Simple Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close",),
+
+    ),
+
+    "sma_100": Feature(
+
+        name="SMA 100",
+
+        category=FeatureCategory.TREND,
+
+        description="100-period Simple Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "sma_200": Feature(
+
+        name="SMA 200",
+
+        category=FeatureCategory.TREND,
+
+        description="200-period Simple Moving Average",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close",),
+
+    ),
+    "distance_from_ema20": Feature(
+
+        name="Distance from EMA 20",
+
+        category=FeatureCategory.TREND,
+
+        description="Close minus EMA 20",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close", "ema_20"),
+
+    ),
+
+    "distance_from_ema50": Feature(
+
+        name="Distance from EMA 50",
+
+        category=FeatureCategory.TREND,
+
+        description="Close minus EMA 50",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close", "ema_50"),
+
+    ),
+
+    "distance_from_ema200": Feature(
+
+        name="Distance from EMA 200",
+
+        category=FeatureCategory.TREND,
+
+        description="Close minus EMA 200",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close", "ema_200"),
+
+    ),
+
+    "distance_from_sma20": Feature(
+
+        name="Distance from SMA 20",
+
+        category=FeatureCategory.TREND,
+
+        description="Close minus SMA 20",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close", "sma_20"),
+
+    ),
+
+    "distance_from_sma50": Feature(
+
+        name="Distance from SMA 50",
+
+        category=FeatureCategory.TREND,
+
+        description="Close minus SMA 50",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close", "sma_50"),
+
+    ),
+
+    "distance_from_sma200": Feature(
+
+        name="Distance from SMA 200",
+
+        category=FeatureCategory.TREND,
+
+        description="Close minus SMA 200",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close", "sma_200"),
+
+    ),
+
+    "ema20_slope": Feature(
+
+        name="EMA20 Slope",
+
+        category=FeatureCategory.TREND,
+
+        description="EMA20 change from previous candle",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("ema_20",),
+
+    ),
+
+    "ema50_slope": Feature(
+
+        name="EMA50 Slope",
+
+        category=FeatureCategory.TREND,
+
+        description="EMA50 change from previous candle",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("ema_50",),
+
+    ),
+
+    "ema200_slope": Feature(
+
+        name="EMA200 Slope",
+
+        category=FeatureCategory.TREND,
+
+        description="EMA200 change from previous candle",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("ema_200",),
+
+    ),
+    "rsi_7": Feature(
+
+        name="RSI 7",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="7-period Relative Strength Index",
+
+        units="Index",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "rsi_14": Feature(
+
+        name="RSI 14",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="14-period Relative Strength Index",
+
+        units="Index",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close",),
+
+    ),
+
+    "rsi_21": Feature(
+
+        name="RSI 21",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="21-period Relative Strength Index",
+
+        units="Index",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "roc_5": Feature(
+
+        name="ROC 5",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="5-period Rate of Change",
+
+        units="%",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "roc_10": Feature(
+
+        name="ROC 10",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="10-period Rate of Change",
+
+        units="%",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "roc_20": Feature(
+
+        name="ROC 20",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="20-period Rate of Change",
+
+        units="%",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close",),
+
+    ),
+    "momentum_5": Feature(
+
+        name="Momentum 5",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="5-period Momentum",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "momentum_10": Feature(
+
+        name="Momentum 10",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="10-period Momentum",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.PLANNED,
+
+        dependencies=("close",),
+
+    ),
+
+    "momentum_20": Feature(
+
+        name="Momentum 20",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="20-period Momentum",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close",),
+
+    ),
+
+    "macd": Feature(
+
+        name="MACD",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="EMA12 - EMA26",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("close",),
+
+    ),
+
+    "macd_signal": Feature(
+
+        name="MACD Signal",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="9-period EMA of MACD",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("macd",),
+
+    ),
+
+    "macd_histogram": Feature(
+
+        name="MACD Histogram",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="MACD minus Signal",
+
+        units="Price",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("macd", "macd_signal"),
+
+    ),
+    "stochastic_k": Feature(
+
+        name="Stochastic %K",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="14-period Stochastic Oscillator %K",
+
+        units="Percent",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("high", "low", "close"),
+
+    ),
+
+    "stochastic_d": Feature(
+
+        name="Stochastic %D",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="3-period moving average of %K",
+
+        units="Percent",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("stochastic_k",),
+
+    ),
+
+    "williams_r": Feature(
+
+        name="Williams %R",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="14-period Williams Percent Range",
+
+        units="Percent",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
+
+        dependencies=("high", "low", "close"),
+
+    ),
+
+    "cci_20": Feature(
+
+        name="CCI 20",
+
+        category=FeatureCategory.MOMENTUM,
+
+        description="20-period Commodity Channel Index",
+
+        units="Index",
+
+        deterministic=True,
+
+        status=FeatureStatus.CORE,
 
         dependencies=("high", "low", "close"),
 

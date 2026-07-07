@@ -14,6 +14,7 @@ No research.
 from __future__ import annotations
 
 import pandas as pd
+from .utils import FeatureUtils
 
 
 class PriceFeatures:
@@ -21,22 +22,6 @@ class PriceFeatures:
     # ======================================================
     # Helper
     # ======================================================
-
-    @staticmethod
-    def safe_divide(
-        numerator: pd.Series,
-        denominator: pd.Series,
-    ) -> pd.Series:
-        """
-        Safe division.
-
-        Division by zero returns NA.
-        """
-
-        return numerator / denominator.replace(
-            0,
-            pd.NA,
-        )
 
     # ======================================================
     # Base Features
@@ -109,7 +94,7 @@ class PriceFeatures:
         if "candle_range" not in df.columns:
             df = PriceFeatures.candle_range(df)
 
-        df["body_ratio"] = PriceFeatures.safe_divide(
+        df["body_ratio"] = FeatureUtils.safe_divide(
             df["body_size"],
             df["candle_range"],
         )
@@ -128,7 +113,7 @@ class PriceFeatures:
             df = PriceFeatures.candle_range(df)
 
         df["upper_wick_ratio"] = (
-            PriceFeatures.safe_divide(
+            FeatureUtils.safe_divide(
                 df["upper_wick"],
                 df["candle_range"],
             )
@@ -148,7 +133,7 @@ class PriceFeatures:
             df = PriceFeatures.candle_range(df)
 
         df["lower_wick_ratio"] = (
-            PriceFeatures.safe_divide(
+            FeatureUtils.safe_divide(
                 df["lower_wick"],
                 df["candle_range"],
             )
@@ -165,7 +150,7 @@ class PriceFeatures:
             df = PriceFeatures.candle_range(df)
 
         df["open_position"] = (
-            PriceFeatures.safe_divide(
+            FeatureUtils.safe_divide(
                 df["open"] - df["low"],
                 df["candle_range"],
             )
@@ -182,7 +167,7 @@ class PriceFeatures:
             df = PriceFeatures.candle_range(df)
 
         df["close_position"] = (
-            PriceFeatures.safe_divide(
+            FeatureUtils.safe_divide(
                 df["close"] - df["low"],
                 df["candle_range"],
             )
