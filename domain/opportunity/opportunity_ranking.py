@@ -52,6 +52,16 @@ class OpportunityRanking:
     rationale: str
 
     # ----------------------------------------------------------
+    # Opportunity Info (carried forward, after required fields)
+    # ----------------------------------------------------------
+
+    symbol: str = ""
+
+    timeframe: str = ""
+
+    direction: str = ""
+
+    # ----------------------------------------------------------
     # Validation
     # ----------------------------------------------------------
 

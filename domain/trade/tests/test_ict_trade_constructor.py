@@ -29,6 +29,10 @@ def make_portfolio_decision() -> PortfolioDecision:
             25.0,
         ),
 
+        symbols=("TEST", "TEST", "TEST"),
+        timeframes=("1d", "1d", "1d"),
+        directions=("LONG", "LONG", "LONG"),
+
         allocation_method="FIXED_WEIGHT",
 
         total_allocated=100.0,
@@ -51,7 +55,7 @@ def test_metadata():
 
     assert constructor.constructor_name == "ICTTradeConstructor"
     assert constructor.theory == "ICT"
-    assert constructor.version == "1.0"
+    assert constructor.version == "2.0"
 
 
 # ==========================================================
@@ -134,10 +138,10 @@ def test_position_size_placeholder():
 
 
 # ==========================================================
-# Version 1 Placeholders
+# Trade Construction
 # ==========================================================
 
-def test_symbol_placeholder():
+def test_symbol_from_decision():
 
     constructor = ICTTradeConstructor()
 
@@ -145,10 +149,10 @@ def test_symbol_placeholder():
         make_portfolio_decision()
     )[0]
 
-    assert trade.symbol == "UNKNOWN"
+    assert trade.symbol == "TEST"
 
 
-def test_timeframe_placeholder():
+def test_timeframe_from_decision():
 
     constructor = ICTTradeConstructor()
 
@@ -156,10 +160,10 @@ def test_timeframe_placeholder():
         make_portfolio_decision()
     )[0]
 
-    assert trade.timeframe == "UNKNOWN"
+    assert trade.timeframe == "1d"
 
 
-def test_direction_placeholder():
+def test_direction_from_decision():
 
     constructor = ICTTradeConstructor()
 
@@ -170,7 +174,7 @@ def test_direction_placeholder():
     assert trade.direction == "LONG"
 
 
-def test_execution_fields_unknown():
+def test_execution_fields_defaults():
 
     constructor = ICTTradeConstructor()
 
@@ -182,8 +186,8 @@ def test_execution_fields_unknown():
     assert trade.stop_loss is None
     assert trade.take_profit is None
 
-    assert trade.order_type == "UNKNOWN"
-    assert trade.validity == "UNKNOWN"
+    assert trade.order_type == "MARKET"
+    assert trade.validity == "DAY"
 
     assert not trade.is_executable
 
@@ -203,6 +207,10 @@ def test_empty_portfolio_returns_empty_tuple():
         selected_ranking_ids=(),
 
         capital_allocations=(),
+
+        symbols=(),
+        timeframes=(),
+        directions=(),
 
         allocation_method="FIXED_WEIGHT",
 

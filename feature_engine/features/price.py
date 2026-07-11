@@ -14,7 +14,7 @@ No research.
 from __future__ import annotations
 
 import pandas as pd
-from .utils import FeatureUtils
+from feature_engine.features.utils import FeatureUtils
 
 
 class PriceFeatures:
@@ -205,7 +205,7 @@ class PriceFeatures:
         previous_close = df["close"].shift(1)
 
         df["gap_percent"] = (
-            PriceFeatures._safe_divide(
+            FeatureUtils.safe_divide(
                 df["gap"],
                 previous_close,
             )

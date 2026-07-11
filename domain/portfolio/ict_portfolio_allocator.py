@@ -16,7 +16,7 @@ from domain.portfolio.portfolio_decision import (
 
 class ICTPortfolioAllocator(PortfolioAllocator):
     """
-    Version 1 ICT Portfolio Allocator.
+    Version 2 ICT Portfolio Allocator.
 
     Produces a deterministic PortfolioDecision from one
     or more Opportunity Rankings.
@@ -48,7 +48,7 @@ class ICTPortfolioAllocator(PortfolioAllocator):
 
     @property
     def version(self) -> str:
-        return "1.0"
+        return "2.0"
 
     # ==========================================================
     # Public API
@@ -62,7 +62,11 @@ class ICTPortfolioAllocator(PortfolioAllocator):
         constraints=None,
     ) -> PortfolioDecision:
 
-        if not rankings:
+        eligible = [
+            r for r in rankings if r.portfolio_eligible
+        ]
+
+        if not eligible:
 
             return PortfolioDecision(
                 decision_id=str(uuid4()),
@@ -72,11 +76,15 @@ class ICTPortfolioAllocator(PortfolioAllocator):
 
                 capital_allocations=(),
 
+                symbols=(),
+                timeframes=(),
+                directions=(),
+
                 allocation_method="FIXED_WEIGHT",
 
                 total_allocated=0.0,
 
-                cash_reserve=100.0,
+                cash_reserve=available_capital,
 
                 constraints=tuple(constraints or ()),
 
@@ -84,14 +92,17 @@ class ICTPortfolioAllocator(PortfolioAllocator):
             )
 
         allocations = self._determine_allocations(
-            len(rankings)
+            len(eligible)
         )
 
         selected_ids = []
         capital_allocations = []
+        symbols = []
+        timeframes = []
+        directions = []
 
         for ranking, allocation in zip(
-            rankings,
+            eligible,
             allocations,
         ):
             selected_ids.append(
@@ -100,6 +111,9 @@ class ICTPortfolioAllocator(PortfolioAllocator):
             capital_allocations.append(
                 allocation
             )
+            symbols.append(ranking.symbol)
+            timeframes.append(ranking.timeframe)
+            directions.append(ranking.direction)
 
         total_allocated = sum(
             capital_allocations
@@ -121,6 +135,10 @@ class ICTPortfolioAllocator(PortfolioAllocator):
             capital_allocations=tuple(
                 capital_allocations
             ),
+
+            symbols=tuple(symbols),
+            timeframes=tuple(timeframes),
+            directions=tuple(directions),
 
             allocation_method="FIXED_WEIGHT",
 

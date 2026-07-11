@@ -1,0 +1,54 @@
+# ==========================================================
+# Experiment Information
+# ==========================================================
+
+experiment_id: SM_0001
+
+name: ICT Structural Model Baseline
+
+description: >
+  Baseline experiment using the first deterministic ICT
+  Structural Model implementation.
+
+# ==========================================================
+# Dataset
+# ==========================================================
+
+dataset: historical_data/normalized/ACUTAAS_1m.csv
+
+# ==========================================================
+# Structural Model
+# ==========================================================
+
+structural_model: ICTStructuralModelV1
+
+# ==========================================================
+# Research Target
+# ==========================================================
+
+target: CONTINUATION_20
+
+# ==========================================================
+# Evaluation
+# ==========================================================
+
+evaluation_metrics:
+
+  - information_gain
+  - mutual_information
+  - correlation
+
+# ==========================================================
+# Output
+# ==========================================================
+
+output_directory: research/experiments/storage/results
+
+# ==========================================================
+# Model Parameters
+#
+# Optional.
+# Leave empty for V1.
+# ==========================================================
+
+parameters: {}

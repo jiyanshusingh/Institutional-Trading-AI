@@ -93,6 +93,10 @@ class ICTOpportunityAssessor(OpportunityAssessor):
 
             opportunity_id=opportunity.opportunity_id,
 
+            symbol=opportunity.symbol,
+            timeframe=opportunity.timeframe,
+            direction=opportunity.direction,
+
             assessment_level=assessment_level,
 
             overall_score=overall_score,

@@ -1,5 +1,6 @@
 from assessments.structural.structural_assessment import StructuralAssessment
 from assessments.structural.structural_state import StructuralState
+from assessments.structural.rules.continuation_rule import ContinuationRule
 
 
 class StructuralAssessmentPolicy:

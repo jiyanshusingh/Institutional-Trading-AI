@@ -1,0 +1,267 @@
+======================================================================
+  PORTFOLIO BACKTEST — 118 Symbols
+  Timeframe: 15m  |  Lookback: 120d  |  Mode: SWING  |  Provider: yfinance
+======================================================================
+  [1/118] ABB                → ✓ 177 trades  WR= 35.6%  PF=  1.10  avgR= +0.13  PnL=  +5.43%
+  [2/118] ACC                → ✓ 204 trades  WR= 30.9%  PF=  0.90  avgR= -0.04  PnL=  -4.86%
+  [3/118] ADANIENT           → ✓ 157 trades  WR= 25.5%  PF=  0.81  avgR= -0.16  PnL= -10.28%
+  [4/118] ADANIGREEN         → ✓ 164 trades  WR= 40.2%  PF=  1.32  avgR= +0.17  PnL= +17.80%
+  [5/118] ADANIPORTS         → ✓ 144 trades  WR= 27.1%  PF=  0.77  avgR= -0.11  PnL= -10.91%
+  [6/118] ADANIPOWER         → ✓ 186 trades  WR= 38.7%  PF=  1.29  avgR= +0.10  PnL= +16.25%
+  [7/118] ADANITRANS         → ERROR $ADANITRANS.NS: possibly delisted; no price data found  (period=60d) (Yahoo error = "No data found, symbol may be delisted")
+WARNING Not enough data for ADANITRANS.NS @ 15m
+— No trades
+  [8/118] ALKEM              → ✓ 203 trades  WR= 33.0%  PF=  1.18  avgR= +0.01  PnL= +10.75%
+  [9/118] AMBUJACEM          → ✓ 189 trades  WR= 37.6%  PF=  1.09  avgR= +0.10  PnL=  +5.20%
+  [10/118] APOLLOHOSP         → ✓ 173 trades  WR= 27.7%  PF=  0.76  avgR= -0.05  PnL=  -8.90%
+  [11/118] ASHOKLEY           → ✓ 198 trades  WR= 34.8%  PF=  1.00  avgR= +0.06  PnL=  +1.31%
+  [12/118] AUROPHARMA         → ✓ 184 trades  WR= 29.9%  PF=  0.91  avgR= +0.09  PnL=  -4.95%
+  [13/118] AXISBANK           → ✓ 182 trades  WR= 38.5%  PF=  1.42  avgR= +0.21  PnL= +18.39%
+  [14/118] BAJAJ-AUTO         → ✓ 195 trades  WR= 33.8%  PF=  0.97  avgR= +0.08  PnL=  -1.06%
+  [15/118] BAJAJFINSV         → ✓ 193 trades  WR= 36.8%  PF=  1.00  avgR= +0.13  PnL=  +0.18%
+  [16/118] BAJFINANCE         → ✓ 167 trades  WR= 32.9%  PF=  1.19  avgR= +0.11  PnL=  +8.78%
+  [17/118] BANKBARODA         → ✓ 203 trades  WR= 46.3%  PF=  1.66  avgR= +0.35  PnL= +33.96%
+  [18/118] BEL                → ✓ 158 trades  WR= 40.5%  PF=  1.48  avgR= +0.23  PnL= +17.71%
+  [19/118] BHARTIARTL         → ✓ 160 trades  WR= 38.8%  PF=  1.24  avgR= +0.14  PnL=  +8.20%
+  [20/118] BOSCHLTD           → ✓ 171 trades  WR= 25.7%  PF=  0.80  avgR= +0.01  PnL=  -7.71%
+  [21/118] BPCL               → ✓ 186 trades  WR= 41.4%  PF=  1.44  avgR= +0.27  PnL= +19.71%
+  [22/118] BSE                → ✓ 155 trades  WR= 31.0%  PF=  0.89  avgR= +0.00  PnL=  -6.00%
+  [23/118] CANBK              → ✓ 210 trades  WR= 41.4%  PF=  1.37  avgR= +0.22  PnL= +19.76%
+  [24/118] CEMENT             → ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: CEMENT.NS"}}}
+ERROR $CEMENT.NS: possibly delisted; no price data found  (period=60d) (Yahoo error = "No data found, symbol may be delisted")
+WARNING Not enough data for CEMENT.NS @ 15m
+— No trades
+  [25/118] CIPLA              → ✓ 176 trades  WR= 35.2%  PF=  1.09  avgR= +0.02  PnL=  +4.51%
+  [26/118] COALINDIA          → ✓ 190 trades  WR= 45.3%  PF=  1.38  avgR= +0.33  PnL= +18.04%
+  [27/118] COCHINSHIP         → ✓ 179 trades  WR= 37.4%  PF=  1.14  avgR= +0.14  PnL=  +8.56%
+  [28/118] COFORGE            → ✓ 158 trades  WR= 28.5%  PF=  0.79  avgR= -0.16  PnL= -13.43%
+  [29/118] CUMMINSIND         → ✓ 184 trades  WR= 31.5%  PF=  0.89  avgR= +0.01  PnL=  -6.41%
+  [30/118] DIVISLAB           → ✓ 161 trades  WR= 26.1%  PF=  0.80  avgR= -0.23  PnL=  -8.56%
+  [31/118] DIXON              → ✓ 195 trades  WR= 29.7%  PF=  0.89  avgR= +0.13  PnL=  -7.40%
+  [32/118] DMART              → ✓ 199 trades  WR= 40.7%  PF=  1.46  avgR= +0.19  PnL= +21.31%
+  [33/118] DRREDDY            → ✓ 189 trades  WR= 39.7%  PF=  1.33  avgR= +0.18  PnL= +13.95%
+  [34/118] EICHERMOT          → ✓ 180 trades  WR= 34.4%  PF=  1.05  avgR= +0.32  PnL=  +2.27%
+  [35/118] FEDERALBNK         → ✓ 162 trades  WR= 31.5%  PF=  0.82  avgR= +0.02  PnL=  -9.14%
+  [36/118] FORTIS             → ✓ 175 trades  WR= 33.1%  PF=  0.78  avgR= -0.03  PnL= -11.67%
+  [37/118] GAIL               → ✓ 195 trades  WR= 28.7%  PF=  0.74  avgR= -0.16  PnL= -14.19%
+  [38/118] GRASIM             → ✓ 182 trades  WR= 28.0%  PF=  0.83  avgR= +0.03  PnL=  -8.59%
+  [39/118] HAL                → ✓ 189 trades  WR= 29.6%  PF=  0.81  avgR= -0.00  PnL= -11.29%
+  [40/118] HAVELLS            → ✓ 210 trades  WR= 37.1%  PF=  1.21  avgR= +0.09  PnL= +11.10%
+  [41/118] HCLTECH            → ✓ 203 trades  WR= 35.5%  PF=  1.11  avgR= +0.09  PnL=  +6.04%
+  [42/118] HDFCBANK           → ✓ 158 trades  WR= 32.3%  PF=  0.97  avgR= -0.06  PnL=  -1.08%
+  [43/118] HEROMOTOCO         → ✓ 211 trades  WR= 39.8%  PF=  1.21  avgR= +0.22  PnL= +12.04%
+  [44/118] HINDALCO           → ✓ 179 trades  WR= 34.1%  PF=  0.99  avgR= +0.05  PnL=  -0.48%
+  [45/118] HINDUNILVR         → ✓ 180 trades  WR= 40.0%  PF=  1.22  avgR= +0.18  PnL=  +8.11%
+  [46/118] ICICIBANK          → ✓ 167 trades  WR= 37.1%  PF=  1.14  avgR= +0.23  PnL=  +5.34%
+  [47/118] ICICIPRULI         → ✓ 168 trades  WR= 41.1%  PF=  1.37  avgR= +0.36  PnL= +17.90%
+  [48/118] IDFCFIRSTB         → ✓ 166 trades  WR= 36.7%  PF=  1.13  avgR= +0.11  PnL=  +6.27%
+  [49/118] INDUSINDBK         → ✓ 158 trades  WR= 31.0%  PF=  0.92  avgR= +0.10  PnL=  -3.84%
+  [50/118] INFOEDGE           → ERROR $INFOEDGE.NS: possibly delisted; no price data found  (period=60d) (Yahoo error = "No data found, symbol may be delisted")
+WARNING Not enough data for INFOEDGE.NS @ 15m
+— No trades
+  [51/118] INFY               → ✓ 163 trades  WR= 44.2%  PF=  1.40  avgR= +0.30  PnL= +16.27%
+  [52/118] IOC                → ✓ 196 trades  WR= 43.4%  PF=  1.59  avgR= +0.28  PnL= +24.54%
+  [53/118] IRCTC              → ✓ 232 trades  WR= 37.5%  PF=  1.23  avgR= +0.13  PnL= +10.20%
+  [54/118] IRFC               → ✓ 206 trades  WR= 36.4%  PF=  1.19  avgR= +0.09  PnL=  +9.33%
+  [55/118] ITC                → ✓ 195 trades  WR= 41.5%  PF=  1.39  avgR= +0.21  PnL= +13.26%
+  [56/118] JINDALSTEEL        → ERROR $JINDALSTEEL.NS: possibly delisted; no price data found  (period=60d) (Yahoo error = "No data found, symbol may be delisted")
+WARNING Not enough data for JINDALSTEEL.NS @ 15m
+— No trades
+  [57/118] JINDALSTEL         → ✓ 220 trades  WR= 36.4%  PF=  1.07  avgR= +0.07  PnL=  +4.52%
+  [58/118] JIOFIN             → ✓ 167 trades  WR= 31.1%  PF=  0.81  avgR= -0.07  PnL=  -8.60%
+  [59/118] JSWSTEEL           → ✓ 184 trades  WR= 22.8%  PF=  0.51  avgR= -0.33  PnL= -27.97%
+  [60/118] KOTAKBANK          → ✓ 178 trades  WR= 37.1%  PF=  1.12  avgR= +0.11  PnL=  +3.99%
+  [61/118] LAURUSLABS         → ✓ 135 trades  WR= 27.4%  PF=  0.89  avgR= -0.12  PnL=  -5.12%
+  [62/118] LT                 → ✓ 190 trades  WR= 46.3%  PF=  1.89  avgR= +0.40  PnL= +30.80%
+  [63/118] LTIM               → ERROR $LTIM.NS: possibly delisted; no price data found  (period=60d) (Yahoo error = "No data found, symbol may be delisted")
+WARNING Not enough data for LTIM.NS @ 15m
+— No trades
+  [64/118] LTTS               → ✓ 190 trades  WR= 37.4%  PF=  1.13  avgR= +0.13  PnL=  +8.09%
+  [65/118] LUPIN              → ✓ 190 trades  WR= 31.6%  PF=  0.90  avgR= +0.01  PnL=  -5.22%
+  [66/118] M&M                → ✓ 186 trades  WR= 30.1%  PF=  0.88  avgR= -0.12  PnL=  -6.82%
+  [67/118] MARUTI             → ✓ 178 trades  WR= 35.4%  PF=  1.02  avgR= +0.10  PnL=  +0.85%
+  [68/118] MAXHEALTH          → ✓ 179 trades  WR= 31.3%  PF=  1.10  avgR= -0.06  PnL=  +4.92%
+  [69/118] MAZDOCK            → ✓ 202 trades  WR= 29.7%  PF=  0.86  avgR= -0.06  PnL=  -9.47%
+  [70/118] MCDOWELL-N         → ERROR $MCDOWELL-N.NS: possibly delisted; no price data found  (period=60d) (Yahoo error = "No data found, symbol may be delisted")
+WARNING Not enough data for MCDOWELL-N.NS @ 15m
+— No trades
+  [71/118] METROPOLIS         → ✓ 157 trades  WR= 26.8%  PF=  0.83  avgR= -0.01  PnL= -10.24%
+  [72/118] MOTHERSON          → ✓ 186 trades  WR= 24.7%  PF=  0.71  avgR= -0.19  PnL= -20.56%
+  [73/118] MPHASIS            → ✓ 191 trades  WR= 37.2%  PF=  1.05  avgR= +0.16  PnL=  +3.16%
+  [74/118] MRF                → — No trades
+  [75/118] NATIONALUM         → ✓ 190 trades  WR= 38.4%  PF=  1.11  avgR= +0.13  PnL=  +7.24%
+  [76/118] NAUKRI             → ✓ 182 trades  WR= 26.9%  PF=  0.70  avgR= -0.21  PnL= -20.28%
+  [77/118] NESTLEIND          → ✓ 173 trades  WR= 30.6%  PF=  0.96  avgR= -0.03  PnL=  -1.89%
+  [78/118] NHPC               → ✓ 192 trades  WR= 41.7%  PF=  1.53  avgR= +0.23  PnL= +23.29%
+  [79/118] NTPC               → ✓ 224 trades  WR= 43.3%  PF=  1.46  avgR= +0.24  PnL= +18.18%
+  [80/118] NYKAA              → ✓ 157 trades  WR= 29.9%  PF=  1.09  avgR= +0.26  PnL=  +4.30%
+  [81/118] OFSS               → ✓ 163 trades  WR= 33.1%  PF=  1.04  avgR= +0.16  PnL=  +1.93%
+  [82/118] OIL                → ✓ 187 trades  WR= 32.6%  PF=  0.92  avgR= -0.03  PnL=  -4.58%
+  [83/118] ONGC               → ✓ 193 trades  WR= 45.1%  PF=  1.64  avgR= +0.34  PnL= +27.61%
+  [84/118] PAYTM              → ✓ 186 trades  WR= 31.2%  PF=  0.95  avgR= +0.04  PnL=  -6.43%
+  [85/118] PERSISTENT         → ✓ 176 trades  WR= 31.8%  PF=  0.96  avgR= +0.02  PnL=  -2.59%
+  [86/118] PFC                → ✓ 175 trades  WR= 38.9%  PF=  1.34  avgR= +0.15  PnL= +14.79%
+  [87/118] PIDILITIND         → ✓ 171 trades  WR= 32.7%  PF=  0.99  avgR= +0.07  PnL=  -0.65%
+  [88/118] PNB                → ✓ 209 trades  WR= 35.9%  PF=  1.18  avgR= +0.05  PnL=  +9.17%
+  [89/118] POLICYBZR          → ✓ 181 trades  WR= 42.5%  PF=  1.35  avgR= +0.29  PnL= +20.86%
+  [90/118] POWERGRID          → ✓ 230 trades  WR= 35.2%  PF=  1.04  avgR= +0.06  PnL=  +2.07%
+  [91/118] RBLBANK            → ✓ 157 trades  WR= 26.1%  PF=  0.72  avgR= -0.25  PnL= -17.51%
+  [92/118] RECLTD             → ✓ 216 trades  WR= 33.8%  PF=  1.06  avgR= +0.05  PnL=  +3.20%
+  [93/118] RELIANCE           → ✓ 187 trades  WR= 42.8%  PF=  1.40  avgR= +0.28  PnL= +15.02%
+  [94/118] RVNL               → ✓ 229 trades  WR= 45.9%  PF=  1.61  avgR= +0.35  PnL= +35.56%
+  [95/118] SAIL               → ✓ 162 trades  WR= 41.4%  PF=  1.30  avgR= +0.22  PnL= +16.66%
+  [96/118] SBIN               → ✓ 174 trades  WR= 28.7%  PF=  0.94  avgR= -0.14  PnL=  -2.69%
+  [97/118] SCHNEIDER          → ✓ 155 trades  WR= 41.3%  PF=  1.46  avgR= +0.40  PnL= +33.12%
+  [98/118] SHREECEM           → ✓ 189 trades  WR= 37.6%  PF=  1.11  avgR= +0.20  PnL=  +4.26%
+  [99/118] SIEMENS            → ✓ 206 trades  WR= 32.5%  PF=  0.90  avgR= -0.04  PnL=  -7.43%
+  [100/118] SUNPHARMA          → ✓ 173 trades  WR= 28.9%  PF=  0.74  avgR= -0.11  PnL= -11.91%
+  [101/118] TATACONSUM         → ✓ 197 trades  WR= 40.6%  PF=  1.31  avgR= +0.20  PnL= +15.11%
+  [102/118] TATAELXSI          → ✓ 205 trades  WR= 43.9%  PF=  1.36  avgR= +0.27  PnL= +19.16%
+  [103/118] TATAMOTORS         → ERROR $TATAMOTORS.NS: possibly delisted; no price data found  (period=60d) (Yahoo error = "No data found, symbol may be delisted")
+WARNING Not enough data for TATAMOTORS.NS @ 15m
+— No trades
+  [104/118] TATASTEEL          → ✓ 190 trades  WR= 37.9%  PF=  1.17  avgR= +0.12  PnL=  +8.12%
+  [105/118] TCS                → ✓ 189 trades  WR= 45.5%  PF=  1.53  avgR= +0.35  PnL= +21.24%
+  [106/118] TECHM              → ✓ 137 trades  WR= 37.2%  PF=  0.92  avgR= +0.06  PnL=  -3.49%
+  [107/118] TITAGARH           → ✓ 179 trades  WR= 35.8%  PF=  1.14  avgR= +0.22  PnL=  +8.52%
+  [108/118] TITAN              → ✓ 186 trades  WR= 43.0%  PF=  1.41  avgR= +0.30  PnL= +17.47%
+  [109/118] TORNTPHARM         → ✓ 146 trades  WR= 26.0%  PF=  0.79  avgR= +0.02  PnL=  -9.46%
+  [110/118] TRENT              → ✓ 174 trades  WR= 43.1%  PF=  1.64  avgR= +0.52  PnL= +28.97%
+  [111/118] ULTRACEMCO         → ✓ 198 trades  WR= 35.4%  PF=  0.97  avgR= +0.08  PnL=  -1.03%
+  [112/118] UNIONBANK          → ✓ 208 trades  WR= 36.5%  PF=  1.18  avgR= +0.07  PnL= +11.55%
+  [113/118] VEDL               → ✓ 183 trades  WR= 35.0%  PF=  1.08  avgR= +0.00  PnL=  +4.87%
+  [114/118] VOLTAS             → ✓ 188 trades  WR= 38.8%  PF=  1.14  avgR= +0.15  PnL=  +8.35%
+  [115/118] WIPRO              → ✓ 185 trades  WR= 39.5%  PF=  1.22  avgR= +0.18  PnL=  +9.36%
+  [116/118] YESBANK            → ✓ 185 trades  WR= 29.7%  PF=  0.85  avgR= -0.16  PnL=  -8.87%
+  [117/118] ZOMATO             → ERROR $ZOMATO.NS: possibly delisted; no price data found  (period=60d) (Yahoo error = "No data found, symbol may be delisted")
+WARNING Not enough data for ZOMATO.NS @ 15m
+— No trades
+  [118/118] ZYDUSLIFE          → ✓ 146 trades  WR= 33.6%  PF=  0.98  avgR= +0.07  PnL=  -0.52%
+
+  Symbol             Tr   WR     PF      avgR    PnL%     MaxDD  
+  ────────────────── ──── ────── ─────── ─────── ──────── ───────
+  LT                  190  46.3%    1.89  +0.40  +30.80%    5.9%
+  BANKBARODA          203  46.3%    1.66  +0.35  +33.96%    8.1%
+  TRENT               174  43.1%    1.64  +0.52  +28.97%    7.9%
+  ONGC                193  45.1%    1.64  +0.34  +27.61%   10.6%
+  RVNL                229  45.9%    1.61  +0.35  +35.56%    5.3%
+  IOC                 196  43.4%    1.59  +0.28  +24.54%    5.1%
+  NHPC                192  41.7%    1.53  +0.23  +23.29%    6.5%
+  TCS                 189  45.5%    1.53  +0.35  +21.24%    6.7%
+  BEL                 158  40.5%    1.48  +0.23  +17.71%    8.9%
+  SCHNEIDER           155  41.3%    1.46  +0.40  +33.12%   14.5%
+  NTPC                224  43.3%    1.46  +0.24  +18.18%   12.8%
+  DMART               199  40.7%    1.46  +0.19  +21.31%    6.5%
+  BPCL                186  41.4%    1.44  +0.27  +19.71%    4.8%
+  AXISBANK            182  38.5%    1.42  +0.21  +18.39%    8.2%
+  TITAN               186  43.0%    1.41  +0.30  +17.47%    6.2%
+  INFY                163  44.2%    1.40  +0.30  +16.27%    7.0%
+  RELIANCE            187  42.8%    1.40  +0.28  +15.02%    5.7%
+  ITC                 195  41.5%    1.39  +0.21  +13.26%    6.7%
+  COALINDIA           190  45.3%    1.38  +0.33  +18.04%   10.1%
+  CANBK               210  41.4%    1.37  +0.22  +19.76%    7.4%
+  ICICIPRULI          168  41.1%    1.37  +0.36  +17.90%   12.6%
+  TATAELXSI           205  43.9%    1.36  +0.27  +19.16%    8.8%
+  POLICYBZR           181  42.5%    1.35  +0.29  +20.86%    8.7%
+  PFC                 175  38.9%    1.34  +0.15  +14.79%   13.1%
+  DRREDDY             189  39.7%    1.33  +0.18  +13.95%   10.8%
+  ADANIGREEN          164  40.2%    1.32  +0.17  +17.80%   13.2%
+  TATACONSUM          197  40.6%    1.31  +0.20  +15.11%    8.8%
+  SAIL                162  41.4%    1.30  +0.22  +16.66%    7.9%
+  ADANIPOWER          186  38.7%    1.29  +0.10  +16.25%   11.1%
+  BHARTIARTL          160  38.8%    1.24  +0.14   +8.20%    5.9%
+  IRCTC               232  37.5%    1.23  +0.13  +10.20%    5.6%
+  WIPRO               185  39.5%    1.22  +0.18   +9.36%   14.5%
+  HINDUNILVR          180  40.0%    1.22  +0.18   +8.11%    8.0%
+  HEROMOTOCO          211  39.8%    1.21  +0.22  +12.04%    7.5%
+  HAVELLS             210  37.1%    1.21  +0.09  +11.10%   12.6%
+  BAJFINANCE          167  32.9%    1.19  +0.11   +8.78%    9.0%
+  IRFC                206  36.4%    1.19  +0.09   +9.33%    9.0%
+  ALKEM               203  33.0%    1.18  +0.01  +10.75%    9.5%
+  PNB                 209  35.9%    1.18  +0.05   +9.17%    7.7%
+  UNIONBANK           208  36.5%    1.18  +0.07  +11.55%   11.1%
+  TATASTEEL           190  37.9%    1.17  +0.12   +8.12%    7.8%
+  ICICIBANK           167  37.1%    1.14  +0.23   +5.34%    6.7%
+  COCHINSHIP          179  37.4%    1.14  +0.14   +8.56%   10.7%
+  TITAGARH            179  35.8%    1.14  +0.22   +8.52%   11.8%
+  VOLTAS              188  38.8%    1.14  +0.15   +8.35%   10.3%
+  LTTS                190  37.4%    1.13  +0.13   +8.09%    7.7%
+  IDFCFIRSTB          166  36.7%    1.13  +0.11   +6.27%    5.1%
+  KOTAKBANK           178  37.1%    1.12  +0.11   +3.99%    8.3%
+  HCLTECH             203  35.5%    1.11  +0.09   +6.04%    9.0%
+  NATIONALUM          190  38.4%    1.11  +0.13   +7.24%   17.9%
+  SHREECEM            189  37.6%    1.11  +0.20   +4.26%    6.5%
+  MAXHEALTH           179  31.3%    1.10  -0.06   +4.92%   13.9%
+  ABB                 177  35.6%    1.10  +0.13   +5.43%    9.5%
+  AMBUJACEM           189  37.6%    1.09  +0.10   +5.20%    9.7%
+  CIPLA               176  35.2%    1.09  +0.02   +4.51%    7.2%
+  NYKAA               157  29.9%    1.09  +0.26   +4.30%   11.1%
+  VEDL                183  35.0%    1.08  +0.00   +4.87%   11.7%
+  JINDALSTEL          220  36.4%    1.07  +0.07   +4.52%    9.0%
+  RECLTD              216  33.8%    1.06  +0.05   +3.20%    9.5%
+  EICHERMOT           180  34.4%    1.05  +0.32   +2.27%    9.2%
+  MPHASIS             191  37.2%    1.05  +0.16   +3.16%   12.4%
+  POWERGRID           230  35.2%    1.04  +0.06   +2.07%    9.5%
+  OFSS                163  33.1%    1.04  +0.16   +1.93%   11.4%
+  MARUTI              178  35.4%    1.02  +0.10   +0.85%   10.4%
+  ASHOKLEY            198  34.8%    1.00  +0.06   +1.31%   12.6%
+  BAJAJFINSV          193  36.8%    1.00  +0.13   +0.18%   10.1%
+  HINDALCO            179  34.1%    0.99  +0.05   -0.48%    9.6%
+  PIDILITIND          171  32.7%    0.99  +0.07   -0.65%    9.1%
+  ZYDUSLIFE           146  33.6%    0.98  +0.07   -0.52%    7.4%
+  ULTRACEMCO          198  35.4%    0.97  +0.08   -1.03%    9.0%
+  HDFCBANK            158  32.3%    0.97  -0.06   -1.08%   12.5%
+  BAJAJ-AUTO          195  33.8%    0.97  +0.08   -1.06%    5.6%
+  NESTLEIND           173  30.6%    0.96  -0.03   -1.89%    8.8%
+  PERSISTENT          176  31.8%    0.96  +0.02   -2.59%   11.1%
+  PAYTM               186  31.2%    0.95  +0.04   -6.43%   14.8%
+  SBIN                174  28.7%    0.94  -0.14   -2.69%   18.3%
+  TECHM               137  37.2%    0.92  +0.06   -3.49%   11.8%
+  INDUSINDBK          158  31.0%    0.92  +0.10   -3.84%    8.3%
+  OIL                 187  32.6%    0.92  -0.03   -4.58%   13.5%
+  AUROPHARMA          184  29.9%    0.91  +0.09   -4.95%   15.9%
+  LUPIN               190  31.6%    0.90  +0.01   -5.22%   14.6%
+  ACC                 204  30.9%    0.90  -0.04   -4.86%   11.1%
+  SIEMENS             206  32.5%    0.90  -0.04   -7.43%   17.5%
+  DIXON               195  29.7%    0.89  +0.13   -7.40%   18.4%
+  CUMMINSIND          184  31.5%    0.89  +0.01   -6.41%   12.5%
+  LAURUSLABS          135  27.4%    0.89  -0.12   -5.12%   13.6%
+  BSE                 155  31.0%    0.89  +0.00   -6.00%   19.2%
+  M&M                 186  30.1%    0.88  -0.12   -6.82%   11.4%
+  MAZDOCK             202  29.7%    0.86  -0.06   -9.47%   13.8%
+  YESBANK             185  29.7%    0.85  -0.16   -8.87%   14.5%
+  METROPOLIS          157  26.8%    0.83  -0.01  -10.24%   14.3%
+  GRASIM              182  28.0%    0.83  +0.03   -8.59%   14.2%
+  FEDERALBNK          162  31.5%    0.82  +0.02   -9.14%   13.3%
+  HAL                 189  29.6%    0.81  -0.00  -11.29%   16.6%
+  JIOFIN              167  31.1%    0.81  -0.07   -8.60%   15.8%
+  ADANIENT            157  25.5%    0.81  -0.16  -10.28%   18.6%
+  BOSCHLTD            171  25.7%    0.80  +0.01   -7.71%   11.8%
+  DIVISLAB            161  26.1%    0.80  -0.23   -8.56%   14.7%
+  TORNTPHARM          146  26.0%    0.79  +0.02   -9.46%   17.3%
+  COFORGE             158  28.5%    0.79  -0.16  -13.43%   22.6%
+  FORTIS              175  33.1%    0.78  -0.03  -11.67%   16.6%
+  ADANIPORTS          144  27.1%    0.77  -0.11  -10.91%   16.3%
+  APOLLOHOSP          173  27.7%    0.76  -0.05   -8.90%   15.3%
+  SUNPHARMA           173  28.9%    0.74  -0.11  -11.91%   12.7%
+  GAIL                195  28.7%    0.74  -0.16  -14.19%   19.8%
+  RBLBANK             157  26.1%    0.72  -0.25  -17.51%   23.5%
+  MOTHERSON           186  24.7%    0.71  -0.19  -20.56%   25.4%
+  NAUKRI              182  26.9%    0.70  -0.21  -20.28%   25.7%
+  JSWSTEEL            184  22.8%    0.51  -0.33  -27.97%   29.0%
+  JINDALSTEEL           0   0.0%    0.00  +0.00   +0.00%    0.0%
+  ZOMATO                0   0.0%    0.00  +0.00   +0.00%    0.0%
+  MCDOWELL-N            0   0.0%    0.00  +0.00   +0.00%    0.0%
+  ADANITRANS            0   0.0%    0.00  +0.00   +0.00%    0.0%
+  TATAMOTORS            0   0.0%    0.00  +0.00   +0.00%    0.0%
+  CEMENT                0   0.0%    0.00  +0.00   +0.00%    0.0%
+  LTIM                  0   0.0%    0.00  +0.00   +0.00%    0.0%
+  MRF                   0   0.0%    0.00  +0.00   +0.00%    0.0%
+  INFOEDGE              0   0.0%    0.00  +0.00   +0.00%    0.0%
+
+  ─────────────────────────────────────────────────────────
+  TOTAL: 118 symbols  19931 trades  WR=35.5%  28 profitable  52 unprofitable
+
+  Saved to data/backtest_portfolio_15m.json
+  Saved 19931 detailed trades to data/backtest_trades_15m.json
+

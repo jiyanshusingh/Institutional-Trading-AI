@@ -62,6 +62,7 @@ class TradeConstructor(ABC):
     def construct(
         self,
         portfolio_decision: PortfolioDecision,
+        market=None,
         objectives=None,
         constraints=None,
     ) -> tuple[TradeCandidate, ...]:
@@ -74,6 +75,9 @@ class TradeConstructor(ABC):
         portfolio_decision
             PortfolioDecision produced by a
             PortfolioAllocator.
+
+        market
+            Optional CanonicalMarketModel for price derivation.
 
         objectives
             Trading objectives.

@@ -44,6 +44,18 @@ class PortfolioDecision:
         default_factory=tuple
     )
 
+    symbols: Tuple[str, ...] = field(
+        default_factory=tuple
+    )
+
+    timeframes: Tuple[str, ...] = field(
+        default_factory=tuple
+    )
+
+    directions: Tuple[str, ...] = field(
+        default_factory=tuple
+    )
+
     allocation_method: str = "FIXED_WEIGHT"
 
     total_allocated: float = 0.0
@@ -67,12 +79,26 @@ class PortfolioDecision:
                 "Decision ID cannot be empty."
             )
 
-        if len(self.selected_ranking_ids) != len(
-            self.capital_allocations
-        ):
+        n_ids = len(self.selected_ranking_ids)
+        if n_ids != len(self.capital_allocations):
             raise ValueError(
                 "Ranking IDs and capital allocations "
                 "must have the same length."
+            )
+
+        if n_ids != len(self.symbols):
+            raise ValueError(
+                "Symbols must have the same length as ranking IDs."
+            )
+
+        if n_ids != len(self.timeframes):
+            raise ValueError(
+                "Timeframes must have the same length as ranking IDs."
+            )
+
+        if n_ids != len(self.directions):
+            raise ValueError(
+                "Directions must have the same length as ranking IDs."
             )
 
         if self.total_allocated < 0:

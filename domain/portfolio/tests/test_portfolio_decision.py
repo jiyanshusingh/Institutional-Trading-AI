@@ -25,6 +25,10 @@ def make_decision() -> PortfolioDecision:
             25.0,
         ),
 
+        symbols=("TEST", "TEST", "TEST"),
+        timeframes=("1d", "1d", "1d"),
+        directions=("LONG", "LONG", "LONG"),
+
         allocation_method="FIXED_WEIGHT",
 
         total_allocated=100.0,
@@ -97,32 +101,36 @@ def test_summary():
 # Validation
 # ==========================================================
 
+def make_single_decision(
+    ranking_ids=("R1",),
+    allocations=(100.0,),
+    total=100.0,
+    cash=0.0,
+):
+    return PortfolioDecision(
+        decision_id="1",
+        created_at=datetime.now(UTC),
+        selected_ranking_ids=ranking_ids,
+        capital_allocations=allocations,
+        symbols=("TEST",) * len(ranking_ids),
+        timeframes=("1d",) * len(ranking_ids),
+        directions=("LONG",) * len(ranking_ids),
+        allocation_method="FIXED_WEIGHT",
+        total_allocated=total,
+        cash_reserve=cash,
+        constraints=(),
+        rationale="Test.",
+    )
+
+
 def test_invalid_lengths():
 
     with pytest.raises(ValueError):
-
-        PortfolioDecision(
-            decision_id="1",
-            created_at=datetime.now(UTC),
-
-            selected_ranking_ids=(
-                "R1",
-                "R2",
-            ),
-
-            capital_allocations=(
-                100.0,
-            ),
-
-            allocation_method="FIXED_WEIGHT",
-
-            total_allocated=100.0,
-
-            cash_reserve=0.0,
-
-            constraints=(),
-
-            rationale="Invalid.",
+        make_single_decision(
+            ranking_ids=("R1", "R2"),
+            allocations=(100.0,),
+            total=100.0,
+            cash=0.0,
         )
 
 
@@ -130,23 +138,8 @@ def test_negative_cash_reserve():
 
     with pytest.raises(ValueError):
 
-        PortfolioDecision(
-            decision_id="1",
-            created_at=datetime.now(UTC),
-
-            selected_ranking_ids=("R1",),
-
-            capital_allocations=(100.0,),
-
-            allocation_method="FIXED_WEIGHT",
-
-            total_allocated=100.0,
-
-            cash_reserve=-1.0,
-
-            constraints=(),
-
-            rationale="Invalid.",
+        make_single_decision(
+            cash=-1.0,
         )
 
 
@@ -154,23 +147,10 @@ def test_total_not_100_percent():
 
     with pytest.raises(ValueError):
 
-        PortfolioDecision(
-            decision_id="1",
-            created_at=datetime.now(UTC),
-
-            selected_ranking_ids=("R1",),
-
-            capital_allocations=(50.0,),
-
-            allocation_method="FIXED_WEIGHT",
-
-            total_allocated=50.0,
-
-            cash_reserve=40.0,
-
-            constraints=(),
-
-            rationale="Invalid.",
+        make_single_decision(
+            allocations=(50.0,),
+            total=50.0,
+            cash=40.0,
         )
 
 
@@ -178,23 +158,10 @@ def test_negative_allocation():
 
     with pytest.raises(ValueError):
 
-        PortfolioDecision(
-            decision_id="1",
-            created_at=datetime.now(UTC),
-
-            selected_ranking_ids=("R1",),
-
-            capital_allocations=(-10.0,),
-
-            allocation_method="FIXED_WEIGHT",
-
-            total_allocated=-10.0,
-
-            cash_reserve=110.0,
-
-            constraints=(),
-
-            rationale="Invalid.",
+        make_single_decision(
+            allocations=(-10.0,),
+            total=-10.0,
+            cash=110.0,
         )
 
 
@@ -211,6 +178,10 @@ def test_cash_reserve():
         selected_ranking_ids=("RANK-001",),
 
         capital_allocations=(80.0,),
+
+        symbols=("TEST",),
+        timeframes=("1d",),
+        directions=("LONG",),
 
         allocation_method="FIXED_WEIGHT",
 

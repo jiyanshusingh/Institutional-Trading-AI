@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 import pandas as pd
+from domain.ontology.structure_event import StructureDirection
 
 @dataclass(frozen=True)
 class MarketConfiguration:
     df: pd.DataFrame
     structure_events: tuple = ()
-    
+
     segments: tuple = ()
 
     expansions: tuple = ()
@@ -19,7 +20,7 @@ class MarketConfiguration:
     liquidity_regions: tuple = ()
 
     relationships: tuple = ()
-    
+
     # -----------------------------------
     # Expansion Queries
     # -----------------------------------
@@ -29,9 +30,9 @@ class MarketConfiguration:
 
         return max(
             self.expansions,
-            key=lambda expansion: expansion.end_index
+            key=lambda expansion: expansion.confirmation_event_index
         )
-        
+
     def latest_structure_event(self):
         if not self.structure_events:
             return None
@@ -40,7 +41,7 @@ class MarketConfiguration:
             self.structure_events,
             key=lambda event: event.candle_index
         )
-    
+
     def structure_events_after(self, candle_index):
 
         return tuple(
@@ -60,29 +61,26 @@ class MarketConfiguration:
             return None
 
         events = self.structure_events_after(
-            latest.end_index
+            latest.confirmation_event_index
         )
 
         for event in events:
 
-            # Ignore invalid events
             if not event.valid:
                 continue
 
-            # Ignore BOS
-            if event.event_type != "CHOCH":
+            if event.event_type.value != "CHOCH":
                 continue
 
-            # Opposite CHOCH invalidates Expansion
             if (
-                latest.direction == "BULLISH"
-                and event.direction == "BEARISH"
+                latest.direction == StructureDirection.BULLISH
+                and event.direction == StructureDirection.BEARISH
             ):
                 return None
 
             if (
-                latest.direction == "BEARISH"
-                and event.direction == "BULLISH"
+                latest.direction == StructureDirection.BEARISH
+                and event.direction == StructureDirection.BULLISH
             ):
                 return None
 
@@ -96,7 +94,7 @@ class MarketConfiguration:
             event
             for event in self.structure_events
             if event.valid
-            and event.event_type == event_type
+            and event.event_type.value == event_type
         )
 
         if not events:
@@ -115,20 +113,20 @@ class MarketConfiguration:
     # -----------------------------------
 
     def active_segment(self):
-        pass  # later
+        return None
 
     def latest_segment(self):
-        pass # later
+        return None
 
     # -----------------------------------
     # Region Queries
     # -----------------------------------
 
     def latest_order_block(self):
-        pass# later
+        return None
 
     def active_order_blocks(self):
-        pass# later
+        return None
 
     def latest_fair_value_gap(self):
         if not self.fair_value_gaps:
@@ -136,4 +134,4 @@ class MarketConfiguration:
         return self.fair_value_gaps[-1]
 
     def open_fvgs(self):
-        pass# later
+        return None

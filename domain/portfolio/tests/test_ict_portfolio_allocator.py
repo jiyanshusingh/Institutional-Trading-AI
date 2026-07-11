@@ -23,6 +23,10 @@ def make_ranking(
 
         assessment_id=f"ASSESSMENT-{ranking_id}",
 
+        symbol="TEST",
+        timeframe="1d",
+        direction="LONG",
+
         rank_position=rank_position,
 
         ranking_score=score,
@@ -45,7 +49,7 @@ def test_metadata():
 
     assert allocator.allocator_name == "ICTPortfolioAllocator"
     assert allocator.theory == "ICT"
-    assert allocator.version == "1.0"
+    assert allocator.version == "2.0"
 
 
 # ==========================================================

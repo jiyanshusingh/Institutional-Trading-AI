@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institutional Probability — Live Market Scan</title>
+<style>
+  :root {
+    --bg: #0f0f1a;
+    --panel: #16162a;
+    --panel-2: #1d1d36;
+    --border: #2a2a44;
+    --text: #e4e4f0;
+    --muted: #8a8aa8;
+    --green: #28d18f;
+    --green-dim: #163b2e;
+    --amber: #f0a83c;
+    --amber-dim: #3d2f15;
+    --red: #e85a6b;
+    --blue: #5b8def;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+  }
+  .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 22px;
+    background: linear-gradient(180deg, #15152a, #0f0f1a);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header .title { font-size: 17px; font-weight: 600; letter-spacing: .3px; }
+  header .title .dot {
+    display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--green); margin-right: 9px; vertical-align: middle;
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 2.4s infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  header .meta { color: var(--muted); font-size: 12px; text-align: right; }
+  header .meta b { color: var(--text); font-weight: 600; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    padding: 20px 22px;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+  .col h2 {
+    font-size: 13px; text-transform: uppercase; letter-spacing: 1.2px;
+    margin: 0 0 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .col.intraday h2 { color: var(--green); }
+  .col.swing h2 { color: var(--amber); }
+  .col h2 .count {
+    font-size: 11px; background: var(--panel-2); color: var(--muted);
+    padding: 2px 8px; border-radius: 10px; letter-spacing: 0;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 11px;
+    transition: box-shadow .3s, border-color .3s;
+  }
+  .col.intraday .card { border-left-color: var(--green); }
+  .col.swing .card { border-left-color: var(--amber); }
+  .card.flash { animation: flash .9s ease-out; }
+  @keyframes flash {
+    0% { box-shadow: 0 0 0 2px rgba(91,141,239,.6); }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  .card .top { display: flex; justify-content: space-between; align-items: baseline; }
+  .card .sym { font-size: 16px; font-weight: 700; letter-spacing: .4px; }
+  .card .dir {
+    font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  .dir.LONG { background: var(--green-dim); color: var(--green); }
+  .dir.SHORT { background: var(--amber-dim); color: var(--amber); }
+
+  .card .grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 6px 10px; margin-top: 10px;
+  }
+  .cell .k { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; }
+  .cell .v { font-size: 14px; margin-top: 1px; }
+  .cell .v.entry { color: var(--blue); }
+  .cell .v.sl { color: var(--red); }
+  .cell .v.tp { color: var(--green); }
+  .cell .v.r { color: var(--text); font-weight: 600; }
+
+  .card .foot {
+    margin-top: 9px; font-size: 11px; color: var(--muted);
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .card .foot .tier { color: var(--text); }
+
+  .empty {
+    border: 1px dashed var(--border); border-radius: 8px;
+    padding: 26px; text-align: center; color: var(--muted); font-size: 13px;
+  }
+  .err {
+    background: var(--amber-dim); border: 1px solid var(--amber);
+    color: var(--amber); padding: 10px 14px; border-radius: 8px;
+    margin: 0 22px; font-size: 13px;
+  }
+  footer {
+    text-align: center; color: var(--muted); font-size: 11px;
+    padding: 18px; border-top: 1px solid var(--border); margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="title"><span class="dot"></span>Institutional Probability — Live Scan</div>
+  <div class="meta">
+    Last scan: <b id="ts">—</b><br>
+    Signals: <b id="total">0</b> &nbsp;·&nbsp; Scans: <b id="scanned">0</b> &nbsp;·&nbsp; <span id="status">—</span>
+  </div>
+</header>
+
+<div id="error"></div>
+
+<div class="layout">
+  <section class="col intraday">
+    <h2>Intraday <span class="count" id="cnt-intraday">0</span></h2>
+    <div id="intraday"><div class="empty">Waiting for first scan…</div></div>
+  </section>
+  <section class="col swing">
+    <h2>Swing <span class="count" id="cnt-swing">0</span></h2>
+    <div id="swing"><div class="empty">Waiting for first scan…</div></div>
+  </section>
+</div>
+
+<footer>
+  Auto-refreshing every 15s · Silent updates · Scan runs every <span id="interval">15</span> min during NSE market hours
+</footer>
+
+<script>
+const REFRESH_MS = 15000;
+let known = new Set();
+
+function fmt(n) { return (n === null || n === undefined) ? "—" : Number(n).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
+function inr(n) { return "₹" + fmt(n); }
+
+function card(sig, flash) {
+  const el = document.createElement("div");
+  el.className = "card" + (flash ? " flash" : "");
+  el.innerHTML = `
+    <div class="top">
+      <span class="sym mono">${sig.symbol}</span>
+      <span class="dir ${sig.direction}">${sig.direction}</span>
+    </div>
+    <div class="grid">
+      <div class="cell"><div class="k">Score</div><div class="v mono">${sig.score}</div></div>
+      <div class="cell"><div class="k">Entry</div><div class="v entry mono">${inr(sig.entry)}</div></div>
+      <div class="cell"><div class="k">Stop</div><div class="v sl mono">${inr(sig.stop_loss)}</div></div>
+      <div class="cell"><div class="k">Target</div><div class="v tp mono">${inr(sig.take_profit)}</div></div>
+    </div>
+    <div class="foot">
+      <span>R <b class="mono">${sig.r_multiple}</b></span>
+      <span>TF <b class="mono">${sig.tf}</b></span>
+      <span>Last <b class="mono">${inr(sig.price)}</b></span>
+      <span class="tier">Tier: ${sig.tier}</span>
+    </div>`;
+  return el;
+}
+
+function render(list, containerId) {
+  const container = document.getElementById(containerId);
+  if (!list.length) {
+    container.innerHTML = '<div class="empty">No active signals right now.</div>';
+    return;
+  }
+  container.innerHTML = "";
+  for (const sig of list) {
+    const id = sig.tier + "|" + sig.symbol + "|" + sig.tf + "|" + sig.direction;
+    const isNew = !known.has(id);
+    known.add(id);
+    container.appendChild(card(sig, isNew));
+  }
+}
+
+async function refresh() {
+  try {
+    const res = await fetch("/api/latest");
+    const data = await res.json();
+    document.getElementById("ts").textContent = data.ts || "—";
+    document.getElementById("total").textContent = (data.signals || []).length;
+    document.getElementById("scanned").textContent = data.scanned_n || 0;
+    document.getElementById("status").textContent = data.status || "—";
+
+    const intraday = (data.signals || []).filter(s => s.category === "intraday");
+    const swing = (data.signals || []).filter(s => s.category === "swing");
+    document.getElementById("cnt-intraday").textContent = intraday.length;
+    document.getElementById("cnt-swing").textContent = swing.length;
+    render(intraday, "intraday");
+    render(swing, "swing");
+
+    document.getElementById("error").innerHTML = "";
+  } catch (e) {
+    document.getElementById("error").innerHTML =
+      '<div class="err">Could not reach scan server: ' + e + '</div>';
+  }
+}
+
+refresh();
+setInterval(refresh, REFRESH_MS);
+</script>
+</body>
+</html>

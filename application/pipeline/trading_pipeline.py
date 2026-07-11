@@ -8,7 +8,7 @@ from application.pipeline.pipeline_result import PipelineResult
 
 class TradingPipeline:
     """
-    Version 1 Trading Pipeline.
+    Version 2 Trading Pipeline.
 
     Orchestrates the complete trading intelligence
     workflow.
@@ -27,6 +27,7 @@ class TradingPipeline:
         portfolio_allocator,
         trade_constructor,
         execution_planner,
+        available_capital: float = 100.0,
     ):
 
         self.reasoning_model = reasoning_model
@@ -54,6 +55,8 @@ class TradingPipeline:
         self.execution_planner = (
             execution_planner
         )
+
+        self._available_capital = available_capital
 
     # ==========================================================
     # Public API
@@ -121,18 +124,20 @@ class TradingPipeline:
         portfolio_decision = (
             self.portfolio_allocator.allocate(
                 rankings,
+                available_capital=self._available_capital,
                 objectives=objectives,
                 constraints=constraints,
             )
         )
 
         # ------------------------------------------------------
-        # Trade Construction
+        # Trade Construction (with market data for prices)
         # ------------------------------------------------------
 
         trade_candidates = (
             self.trade_constructor.construct(
                 portfolio_decision,
+                market=market,
                 objectives=objectives,
                 constraints=constraints,
             )

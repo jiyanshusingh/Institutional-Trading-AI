@@ -196,10 +196,29 @@ class ICTReasoningModel(ReasoningModel):
                 evidence.append("Bearish Expansion")
 
         if latest_structure_event is not None:
-            evidence.append(
-                f"{latest_structure_event.direction.value} "
-                f"{latest_structure_event.event_type.value}"
-            )
+            direction_text = latest_structure_event.direction.value
+
+            if active_expansion is not None:
+                expansion_dir = (
+                    "BULLISH" if active_expansion.is_bullish else "BEARISH"
+                )
+                if direction_text == expansion_dir:
+                    evidence.append(
+                        f"{direction_text} "
+                        f"{latest_structure_event.event_type.value} "
+                        f"(aligned with expansion)"
+                    )
+                else:
+                    evidence.append(
+                        f"{direction_text} "
+                        f"{latest_structure_event.event_type.value} "
+                        f"(counter-trend)"
+                    )
+            else:
+                evidence.append(
+                    f"{direction_text} "
+                    f"{latest_structure_event.event_type.value}"
+                )
 
         if protected_structure is not None:
             evidence.append("Protected Structure Present")
@@ -222,6 +241,16 @@ class ICTReasoningModel(ReasoningModel):
             and latest_structure_event.event_type == StructureEventType.CHOCH
         ):
             evidence.append("Recent CHOCH")
+
+        if latest_structure_event is not None and active_expansion is not None:
+            expansion_dir = (
+                "BULLISH" if active_expansion.is_bullish else "BEARISH"
+            )
+            event_dir = latest_structure_event.direction.value
+            if expansion_dir != event_dir:
+                evidence.append(
+                    f"Structure event contradicts expansion direction"
+                )
 
         return tuple(evidence)
 # ==============================================================

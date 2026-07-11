@@ -86,6 +86,10 @@ class ICTOpportunityRanker(OpportunityRanker):
 
             assessment_id=assessment.assessment_id,
 
+            symbol=assessment.symbol,
+            timeframe=assessment.timeframe,
+            direction=assessment.direction,
+
             rank_position=rank_position,
 
             ranking_score=assessment.overall_score,

@@ -13,7 +13,7 @@ This module contains NO feature computation.
 """
 
 from __future__ import annotations
-
+import numpy as np
 import pandas as pd
 
 
@@ -39,7 +39,7 @@ class FeatureUtils:
 
         return numerator / denominator.replace(
             0,
-            pd.NA,
+            np.nan,
         )
 
     # ======================================================

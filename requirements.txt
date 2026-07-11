@@ -3,8 +3,6 @@ pandas
 numpy
 ta
 plotly
-streamlit
+streamlit>=1.28
 scipy
-streamlit
-plotly
-plotly
+requests
